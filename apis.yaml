@@ -11,3 +11,7 @@ apis:
     title: OJP 2.0
     map_secrets:
       API_KEY: API_KEY_OJP2
+  - id: ojpfare
+    title: OJP Fare
+    map_secrets:
+      API_KEY: API_KEY_OJPFARE
