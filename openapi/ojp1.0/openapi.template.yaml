@@ -22,12 +22,12 @@ servers:
   - url: "https://api.opentransportdata.swiss"
 components:
   securitySchemes:
-    bearerAuth:
+    BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
 security:
-  - bearerAuth: []
+  - BearerAuth: []
 paths:
   /ojp2020:
     post:
