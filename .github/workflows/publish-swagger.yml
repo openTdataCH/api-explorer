@@ -31,6 +31,7 @@ jobs:
           API_KEY_FORMATION_SERVICE: ${{ secrets.API_KEY_FORMATION_SERVICE }}
           API_KEY_OJP1: ${{ secrets.API_KEY_OJP1 }}
           API_KEY_OJP2: ${{ secrets.API_KEY_OJP2 }}
+          API_KEY_OJPFARE: ${{ secrets.API_KEY_OJPFARE }}
         run: |
           node scripts/render-openapi.mjs
 
