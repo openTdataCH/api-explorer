@@ -46,7 +46,6 @@ jobs:
       # Root landing page to avoid 404 on /api-view/
       - name: Add landing page
         run: |
-          cp site/index.html dist/index.html
           cp dist/index.html dist/404.html || true
           touch dist/.nojekyll
 
