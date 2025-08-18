@@ -31,7 +31,7 @@ API_KEY_NEWAPI=PLACEHOLDER
 API_KEY_NEWAPI=eyJvcmciOiI2NDA....
 ```
 
-- add a new entry in [apis.yaml](./apis.yaml). the id used will be used in the permalink URL, i.e. for `ojp1.0` the URL + path is https://opentdatach.github.io/test-api-explorer/ojp1.0/
+- add a new entry in [apis.yaml](./apis.yaml). the id used will be used in the permalink URL, i.e. for `ojp1.0` the URL + path is https://opentdatach.github.io/api-explorer/ojp1.0/
 
 ```
 apis:
