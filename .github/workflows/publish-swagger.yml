@@ -24,8 +24,8 @@ jobs:
       - name: Install deps
         run: npm install
 
-      # Build API folders using your script (reads .env, .env.local, then process.env)
-      - name: Build API folders
+      # Build index.html landing page / API folders
+      - name: Build index.html landing page / API folders
         env:
           # from repo secrets https://github.com/openTdataCH/test-api-explorer/settings/secrets/actions
           API_KEY_FORMATION_SERVICE: ${{ secrets.API_KEY_FORMATION_SERVICE }}
@@ -34,7 +34,7 @@ jobs:
         run: |
           node scripts/render-openapi.mjs
 
-      # Build local swagger
+      # Build Swagger-UI assets
       - name: Add Swagger UI assets
         run: |
           mkdir -p dist/assets
@@ -43,7 +43,7 @@ jobs:
           cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js dist/assets/
           cp node_modules/swagger-ui-dist/*bundle.js.map dist/assets/ || true
 
-      # Root landing page to avoid 404 on /api-view/
+      # Handle 404 (copy of index.html)
       - name: Add landing page
         run: |
           cp dist/index.html dist/404.html || true
