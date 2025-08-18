@@ -6,10 +6,10 @@ servers:
   - url: "https://api.opentransportdata.swiss"
 components:
   securitySchemes:
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
 security:
-  - BearerAuth: []
+  - bearerAuth: []
 paths: {}
