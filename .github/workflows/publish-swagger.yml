@@ -32,9 +32,7 @@ jobs:
           API_KEY_OJP1: ${{ secrets.API_KEY_OJP1 }}
           API_KEY_OJP2: ${{ secrets.API_KEY_OJP2 }}
         run: |
-          node scripts/render-openapi.mjs --api=formation
-          node scripts/render-openapi.mjs --api=ojp1.0
-          node scripts/render-openapi.mjs --api=ojp2.0
+          node scripts/render-openapi.mjs
 
       # Build local swagger
       - name: Add Swagger UI assets
