@@ -21,7 +21,6 @@
       deepLinking: true,
       presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
       layout: 'StandaloneLayout',
-      persistAuthorization: true,
       tryItOutEnabled: true,
       requestInterceptor: req => {
         req.headers.Authorization = 'Bearer ' + PRESET_BEARER;
