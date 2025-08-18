@@ -26,10 +26,11 @@
       requestInterceptor: req => {
         req.headers.Authorization = 'Bearer ' + PRESET_BEARER;
         return req;
-      }
+      },
+      onComplete: () => {
+        ui.preauthorizeApiKey("BearerAuth", PRESET_BEARER);
+      },
     });
-
-    ui.preauthorizeApiKey('BearerAuth', PRESET_BEARER);
 
     window.ui = ui;
   </script>
