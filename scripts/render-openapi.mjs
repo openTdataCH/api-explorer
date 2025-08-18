@@ -88,6 +88,10 @@ const landingDst = "dist/index.html";
 
 let landingText = fs.readFileSync(landingSrc, "utf8");
 landingText = landingText.replace('[APIS_LIST]', navLinks.join("\n"));
+
+const dateF = new Date().toISOString();
+landingText = landingText.replace('[LAST_UPDATE]', dateF);
+
 fs.writeFileSync(landingDst, landingText, "utf8");
 
 console.log(`Saved landing page to + ${landingDst}`);
