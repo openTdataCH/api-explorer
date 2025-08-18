@@ -57,4 +57,3 @@ A GitHub Actions workflow (under [.github/workflows/publish-swagger.yml](./.gith
 The project is released under a [MIT license](./LICENSE.txt).
 
 Copyright (c) 2025 Open Data Platform Mobility Switzerland - [opentransportdata.swiss](https://opentransportdata.swiss/en/).
-
