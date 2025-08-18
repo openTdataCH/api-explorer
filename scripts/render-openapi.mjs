@@ -2,18 +2,31 @@ import fs from "fs";
 import fse from "fs-extra";
 import path from "path";
 import dotenv from "dotenv";
+import { parse as parseYaml } from "yaml";
 
-const args = Object.fromEntries(
-  process.argv.slice(2).map(a => {
-    const [k, v] = a.startsWith("--") ? a.slice(2).split("=") : [a, true];
-    return [k, v ?? true];
-  })
-);
+const configPath = "apis.yaml";
 
-const api = args.api;
-if (!api) {
-  console.error("Usage: npm run build:api -- --api api1");
-  process.exit(1);
+// Helper: resolve ${VAR}
+function resolveVar(apiCfg, placeholder) {
+  const apiId = apiCfg.id;
+
+  const mapSecrets = apiCfg['map_secrets'] ?? {};
+  const secretKey = mapSecrets[placeholder] ?? null;
+  if (secretKey === null) {
+    throw new Error(`Error API ${apiId}: missing placeholder ${placeholder} in config`);
+  }
+
+  const value = merged[secretKey] ?? null;
+  if (value === null) {
+    throw new Error(`Error API ${apiId}: missing secret defined for key ${secretKey}`);
+  }
+
+  return value;
+}
+
+// Do ${VAR} substitutions in the YAML
+function substitute(apiCfg, text) {
+  return text.replace(/\$\{([A-Z0-9_]+)\}/g, (_, name) => String(resolveVar(apiCfg, name)));
 }
 
 // 1) Load .env then .env.local (override)
@@ -30,58 +43,35 @@ for (const [k, v] of Object.entries(process.env)) {
   if (k && v != null) merged[k] = v;
 }
 
-// 2) Helper: resolve ${VAR} with per-API fallback:
-function resolveVar(name) {
-  if (name === 'API_KEY') {
-    const key = (() => {
-      if (api === 'formation') {
-        return 'API_KEY_FORMATION_SERVICE';
-      }
-
-      if (api === 'ojp1.0') {
-        return 'API_KEY_OJP1';
-      }
-
-      if (api === 'ojp2.0') {
-        return 'API_KEY_OJP2';
-      }
-
-      throw new Error(`Missing env var for ${api}: no map/resolver for API_KEY`);
-    })();
-
-    const value = merged[key] ?? null;
-
-    if (value === null) {
-      throw new Error(`Missing env var for ${api}: cant find ${key} in .env file`);    
-    }
-
-    return value;
-  }
-
-  throw new Error(`Missing env var for ${api}: cant resolve placeholder ${name}`);
+/* Read config */
+if (!fs.existsSync(configPath)) {
+  console.error(`Config not found: ${configPath}`);
+  process.exit(1);
 }
+const cfg = parseYaml(fs.readFileSync(configPath, "utf8"));
+const apis = cfg.apis ?? [];
 
-// 3) Do ${VAR} substitutions in the YAML
-function substitute(text) {
-  return text.replace(/\$\{([A-Z0-9_]+)\}/g, (_, name) => String(resolveVar(name)));
+/* Build all APIs */
+for (const apiConfig of apis) {
+  const apiId = apiConfig.id;
+  if (!apiId) throw new Error("Every api entry needs an 'id'");
+
+  const srcYml = path.join("openapi", apiId, "openapi.template.yaml");
+  const outDir = path.join("dist", apiId);
+  const outYml = path.join(outDir, "openapi.yaml");
+  const srcHtml = path.join("site", "swagger.html");
+  const outHtml = path.join(outDir, "index.html");
+
+  await fse.ensureDir(outDir);
+
+  if (!fs.existsSync(srcYml)) throw new Error(`Template not found: ${srcYml}`);
+  const srcYmlText = await fse.readFile(srcYml, "utf8");
+  await fse.writeFile(outYml, substitute(apiConfig, srcYmlText), "utf8");
+
+  // Write HTML
+  if (!fs.existsSync(srcHtml)) throw new Error(`Swagger HTML not found: ${srcHtml}`);
+  const outHtmlText = await fse.readFile(srcHtml, "utf8");
+  await fse.writeFile(outHtml, substitute(apiConfig, outHtmlText), "utf8");
+
+  console.log(`Built ${apiId} → ${outYml} + ${outHtml}`);
 }
-
-// 4) Paths
-const srcYml = path.join("openapi", api, "openapi.template.yaml");
-const outDir = path.join("dist", api);
-const outYml = path.join(outDir, "openapi.yaml");
-const srcHtml = path.join("site", "swagger.html");
-const outHtml = path.join(outDir, "index.html");
-
-// 5) Build
-await fse.ensureDir(outDir);
-
-// Spec YAML
-if (!fs.existsSync(srcYml)) throw new Error(`Template not found: ${srcYml}`);
-await fse.writeFile(outYml, substitute(await fse.readFile(srcYml, "utf8")), "utf8");
-
-// Write HTML
-if (!fs.existsSync(srcHtml)) throw new Error(`Swagger HTML not found: ${srcHtml}`);
-await fse.writeFile(outHtml, substitute(await fse.readFile(srcHtml, "utf8"), { requireAll: false }), "utf8");
-
-console.log(`Built ${api} → ${outYml} + ${outHtml}`);
