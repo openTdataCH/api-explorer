@@ -1,0 +1,13 @@
+apis:
+  - id: formation
+    title: Formation Service
+    map_secrets:
+      API_KEY: API_KEY_FORMATION_SERVICE
+  - id: ojp1.0
+    title: OJP 1.0
+    map_secrets:
+      API_KEY: API_KEY_OJP1
+  - id: ojp2.0
+    title: OJP 2.0
+    map_secrets:
+      API_KEY: API_KEY_OJP2
