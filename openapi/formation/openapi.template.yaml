@@ -4,6 +4,12 @@ info:
   version: 1.0.0
 servers:
   - url: "https://api.opentransportdata.swiss"
-paths: {}
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 security:
-  - ApiKeyAuth: []
+  - BearerAuth: []
+paths: {}
