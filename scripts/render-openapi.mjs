@@ -51,6 +51,8 @@ if (!fs.existsSync(configPath)) {
 const cfg = parseYaml(fs.readFileSync(configPath, "utf8"));
 const apis = cfg.apis ?? [];
 
+const navLinks = [];
+
 /* Build all APIs */
 for (const apiConfig of apis) {
   const apiId = apiConfig.id;
@@ -74,4 +76,18 @@ for (const apiConfig of apis) {
   await fse.writeFile(outHtml, substitute(apiConfig, outHtmlText), "utf8");
 
   console.log(`Built ${apiId} → ${outYml} + ${outHtml}`);
+
+  const navLinkTitle = apiConfig.title;
+  const navLink = '<a href="./' + apiId + '/">' + navLinkTitle + '</a>';
+  navLinks.push(navLink);
 }
+
+// Replace landing, root page
+const landingSrc = "site/index.html";
+const landingDst = "dist/index.html";
+
+let landingText = fs.readFileSync(landingSrc, "utf8");
+landingText = landingText.replace('[APIS_LIST]', navLinks.join("\n"));
+fs.writeFileSync(landingDst, landingText, "utf8");
+
+console.log(`Saved landing page to + ${landingDst}`);
