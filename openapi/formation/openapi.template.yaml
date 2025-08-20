@@ -1,15 +1,1284 @@
 openapi: 3.0.3
 info:
-  title: Formation Service API (Schema WIP)
-  version: 1.0.0
+  version: 2.0.0
+  title: Train formation service
+  description: This service provides information about train formations. Simply put, train formations
+    represent a sequence of coaches that travel at a given date for a given rail company through a sequence
+    of stops. The service provides details about the coaches, such as the number of seats,
+    whether they are accessible with a wheelchair, have a toilet, etc.
+    <br><br>
+    <b>NOTE 1:</b> the data is limited to public transport rail companies (abbreviated as evu = Eisenbahnverkehrsunternehmen)
+    that provide their formations via Swiss Federal Railways (SBB) and agreed to their data being published as open data.
+    <br>
+    <b>NOTE 2:</b> the service only provides data if it was properly delivered by the operators (see NOTE 1), and if the realtime data from
+    CUS is available. CUS has only data for today + (max.!) 3 days.
+    <br>
+    <b>NOTE 3:</b> the service is provided by the team Systemaufgaben Kundeninformation Plus (SKI+) by the
+    order of the Federal Ofice of Transportation (FOT) in Switzerland.
+    <br>
+    <b>NOTE 4:</b> the data originates from the SKI realtime system's (CUS - CUstomer (information) System - VerkehrsMittel (VM)), and SBB's Formation-Services (FOS).
+  contact:
+    name: Open data platform mobility Switzerland
+    url: https://opentransportdata.swiss
+    email: dlskipt@sbb.ch
+externalDocs:
+  description: Formation API documentation
+  url: https://opentransportdata.swiss/en/cookbook/formationsdaten/
 servers:
-  - url: "https://api.opentransportdata.swiss"
+  - url: https://api.opentransportdata.swiss/formation
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      description: Checks the health of the service.
+      summary: Health check endpoint
+      operationId: getHealth
+      responses:
+        '200':
+          description: "Service is available and running"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "UP"
+        '503':
+          description: "Service is not healthy"
+  /v1/formations_stop_based:
+    get:
+      description: This endpoint provides a stop-based perspective of the train formation, which originates
+        from SKI's real-time system CUS. It includes the stops of the formation and a short string representation
+        of how the vehicles depart from there.
+        A documentation on how to interpret the string can be found here [Shortstring](https://opentransportdata.swiss/en/formationsdaten/).
+      summary: List formations in a compact format with sections
+      operationId: getStopBasedFormations
+      parameters:
+        - in: query
+          name: evu
+          description: The EVU to retrieve the formations for. Case sensitive! Note the limited subset!
+          required: true
+          schema:
+            type: string
+            enum:
+              - BLSP
+              - SBBP
+              - MBC
+              - OeBB
+              - RhB
+              - SOB
+              - THURBO
+              - TPF
+              - TRN
+              - VDBB
+              - ZB
+        - in: query
+          name: operationDate
+          description: The date as of which to get the formations. Dates older than today will not return results.
+          required: true
+          schema:
+            type: string
+            example: '2025-08-20'
+        - in: query
+          name: trainNumber
+          description: The train number, for which to retrieve the formation data
+          required: true
+          schema:
+            type: string
+            example: '2806'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleJourneyStopBased'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Authorization field missing
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Access to this API has been disallowed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: No realtime data available for the given date.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: internal Server error.
+  /v1/formations_vehicle_based:
+    get:
+      description: This endpoint provides a vehicle-based perspective of the train formation, which
+        too originates from SKI's real-time system CUS and is extended by the content of FOS. It
+        includes the vehicles of the formation and their respective stops and departure from there.
+      summary: List formations in a compact format with sections
+      operationId: getVehicleBasedFormations
+      parameters:
+        - in: query
+          name: evu
+          description: The EVU to retrieve the formations for. Case sensitive! Note the limited subset!
+          required: true
+          schema:
+            type: string
+            enum:
+              - BLSP
+              - SBBP
+              - MBC
+              - OeBB
+              - RhB
+              - SOB
+              - THURBO
+              - TPF
+              - TRN
+              - VDBB
+              - ZB
+        - in: query
+          name: operationDate
+          description: The date as of which to get the formations. Dates older than today will not return results.
+          required: true
+          schema:
+            type: string
+            example: '2025-08-20'
+        - in: query
+          name: trainNumber
+          description: The train number, for which to retrieve the formation data
+          required: true
+          schema:
+            type: string
+            example: '2806'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleJourneyVehicleBased'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Authorization field missing
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Access to this API has been disallowed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: No realtime data available for the given date.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: internal Server error.
+  /v1/formations_full:
+    get:
+      description: This endpoint provides a verbose representation about the train formation, which originates
+        from SKI's real-time system CUS and SBB's system FOS.
+        It combines the vehicle and stop-based perspectives to provide a full view.
+        A documentation on how to interpret the short string of the stop-based perspective can be
+        found here [Shorstring](https://opentransportdata.swiss/en/formationsdaten/).
+      summary: List formations for a train
+      operationId: getFormations
+      parameters:
+        - in: query
+          name: evu
+          description: The EVU to retrieve the formations for. Case sensitive! Note the limited subset!
+          required: true
+          schema:
+            type: string
+            enum:
+              - BLSP
+              - SBBP
+              - MBC
+              - OeBB
+              - RhB
+              - SOB
+              - THURBO
+              - TPF
+              - TRN
+              - VDBB
+              - ZB
+        - in: query
+          name: operationDate
+          description: The date as of which to get the formations. Dates older than today will not return results.
+          required: true
+          schema:
+            type: string
+            example: '2025-08-20'
+        - in: query
+          name: trainNumber
+          description: The train number, for which to retrieve the formation data
+          required: true
+          schema:
+            type: string
+            example: '2806'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleJourney'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Authorization field missing
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Access to this API has been disallowed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: No realtime data available for the given date.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: internal Server error.
+  /v1/health:
+    get:
+      description: Checks the health of the service.
+      summary: Health check endpoint
+      operationId: getHealth_v1
+      responses:
+        '200':
+          description: "Service is available and running"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "UP"
+        '503':
+          description: "Service is not healthy"
+  /v2/formations_stop_based:
+    get:
+      description: This endpoint provides a stop-based perspective of the train formation, which originates
+        from SKI's real-time system CUS. It includes the stops of the formation and a short string representation
+        of how the vehicles depart from there.
+        A documentation on how to interpret the string can be found here [Shortstring](https://opentransportdata.swiss/en/formationsdaten/).
+      summary: List formations in a compact format with sections
+      operationId: getStopBasedFormationsV2
+      parameters:
+        - in: query
+          name: evu
+          description: The EVU to retrieve the formations for. Case sensitive! Note the limited subset!
+          required: true
+          schema:
+            type: string
+            enum:
+              - BLSP
+              - SBBP
+              - MBC
+              - OeBB
+              - RhB
+              - SOB
+              - THURBO
+              - TPF
+              - TRN
+              - VDBB
+              - ZB
+        - in: query
+          name: operationDate
+          description: The date as of which to get the formations. Dates older than today will not return results.
+          required: true
+          schema:
+            type: string
+            example: '2025-08-20'
+        - in: query
+          name: trainNumber
+          description: The train number, for which to retrieve the formation data
+          required: true
+          schema:
+            type: string
+            example: '2806'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleJourneyStopBased'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Authorization field missing
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Access to this API has been disallowed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: No realtime data available for the given date.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: internal Server error.
+  /v2/formations_vehicle_based:
+    get:
+      description: This endpoint provides a vehicle-based perspective of the train formation, which
+        too originates from SKI's FOS system. It includes the vehicles of the formation and their
+        respective stops and departure from there.
+        Usually we extend the content with real-time data from CUS. If there are no realtime data
+        we only provide FOS data. This implies that certain fields remain empty/null.
+        The fields include Formation.FormationVehicles.FormationVehicle.VehicleProperties.VehicleRelation, *.vehicleWillBePutAway
+      summary: List formations in a compact format with sections
+      operationId: getVehicleBasedFormationsV2
+      parameters:
+        - in: query
+          name: evu
+          description: The EVU to retrieve the formations for. Case sensitive! Note the limited subset!
+          required: true
+          schema:
+            type: string
+            enum:
+              - BLSP
+              - SBBP
+              - MBC
+              - OeBB
+              - RhB
+              - SOB
+              - THURBO
+              - TPF
+              - TRN
+              - VDBB
+              - ZB
+        - in: query
+          name: operationDate
+          description: The date as of which to get the formations. Dates older than today will not return results.
+          required: true
+          schema:
+            type: string
+            example: '2025-08-20'
+        - in: query
+          name: trainNumber
+          description: The train number, for which to retrieve the formation data
+          required: true
+          schema:
+            type: string
+            example: '2806'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleJourneyVehicleBased'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Authorization field missing
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Access to this API has been disallowed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: No realtime data available for the given date.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: internal Server error.
+  /v2/formations_full:
+    get:
+      description: This endpoint provides a verbose representation about the train formation, which originates
+        from SKI's real-time system CUS and SBB's system FOS.
+        It combines the vehicle and stop-based perspectives to provide a full view.
+        A documentation on how to interpret the short string of the stop-based perspective can be
+        found here [Shorstring](https://opentransportdata.swiss/en/formationsdaten/).
+      summary: List formations for a train
+      operationId: getFormationsV2
+      parameters:
+        - in: query
+          name: evu
+          description: The EVU to retrieve the formations for. Case sensitive! Note the limited subset!
+          required: true
+          schema:
+            type: string
+            enum:
+              - BLSP
+              - SBBP
+              - MBC
+              - OeBB
+              - RhB
+              - SOB
+              - THURBO
+              - TPF
+              - TRN
+              - VDBB
+              - ZB
+        - in: query
+          name: operationDate
+          description: The date as of which to get the formations. Dates older than today will not return results.
+          required: true
+          schema:
+            type: string
+            example: '2025-08-20'
+        - in: query
+          name: trainNumber
+          description: The train number, for which to retrieve the formation data
+          required: true
+          schema:
+            type: string
+            example: '2806'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleJourney'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Authorization field missing
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: Access to this API has been disallowed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: No realtime data available for the given date.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+              example:
+                error: internal Server error.
+  /v2/health:
+    get:
+      description: Checks the health of the service.
+      summary: Health check endpoint
+      operationId: getHealth_v2
+      responses:
+        '200':
+          description: "Service is available and running"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "UP"
+        '503':
+          description: "Service is not healthy"
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-security:
-  - bearerAuth: []
-paths: {}
+  schemas:
+    VehicleJourneyBaseElement: # parent
+      type: object
+      description: The parent element for the VehicleJourney* elements.
+      discriminator:
+        propertyName: vehicleJourneyType
+      properties:
+        lastUpdate: # VmDetail.LetzteAktualisierung
+          type: string
+          example: '2025-08-20T20:05:18.068+02:00'
+        journeyMetaInformation:
+          $ref: '#/components/schemas/JourneyMetaInformation'
+        trainMetaInformation:
+          $ref: '#/components/schemas/TrainMetaInformation'
+    VehicleJourneyVehicleBased:
+      allOf:
+        - $ref: '#/components/schemas/VehicleJourneyBaseElement'
+        - type: object
+          description: This element contains all information related to a train/vehicle's journey, including
+            the stops and the formations. The focus lies on the vehicles.
+          properties:
+            formations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Formation'
+            relationships:
+              type: array
+              description: Can be empty if the realtime system has no information yet
+              items:
+                $ref: '#/components/schemas/VehicleRelationship'
+    VehicleJourneyStopBased:
+      allOf:
+        - $ref: '#/components/schemas/VehicleJourneyBaseElement'
+        - type: object
+          description: This element contains all information related to a train/vehicle's journey, including
+            the stops and the formations. Both of which are always output in the same size, i.e., in synch.
+            Formations are represented in a shortened, compact format.
+          properties:
+            formationsAtScheduledStops:
+              type: array
+              items:
+                $ref: '#/components/schemas/FormationAtScheduledStop'
+    VehicleJourney: # VmListe
+      allOf:
+        - $ref: '#/components/schemas/VehicleJourneyStopBased'
+        - type: object
+          description: The VehicleJourneyShort compactly describes the formations at each stop.
+            This element - the VehicleJourney - extends on the Short version by providing more
+            details about the vehicles in the formation, such as their accessibility properties.
+            This element also describes how the formation mutated before this journey, and will
+            mutate after the journey.
+          properties:
+            formations:
+              type: array
+              description: Can be empty if the realtime system has no information yet
+              items:
+                $ref: '#/components/schemas/Formation'
+            relationships:
+              type: array
+              description: Can be empty if the realtime system has no information yet
+              items:
+                $ref: '#/components/schemas/VehicleRelationship'
+    JourneyMetaInformation: # FahrtId
+      type: object
+      description: Unique identification of the journey
+      properties:
+        SJYID: # FahrtBezeichner
+          type: string
+          description: the journey identifier as Swiss Journey ID (SJYID), or null if no realtime data exist
+          example: 'ch:1:sjyid:100015:2808-002'
+        operationDate: # Betriebstag
+          type: string
+          example: '2025-08-20'
+    TrainMetaInformation: # VmDetail
+      type: object
+      description: Various details about the whole train
+      properties:
+        trainNumber: #VmNr
+          type: integer
+          example: 2806
+        toCode: # TuCode
+          type: string
+          example: '33'
+        runs: # Verkehrt
+          type: string
+          enum: [ J, N, T, L ]
+          description: >
+            Whether or not the train is operated (if no realtime data known, always J)
+            * J  = yes
+            * N  = no
+            * T  = partially operated, needs to be checked per stop
+            * L  = no, needs to be deleted, documentation error
+          example: 'J'
+      required:
+        - trainNumber
+        - toCode
+    Formation: # VmFormationen.Formation
+      type: object
+      description: The Formation of a train, including some meta data as well as the vehicles part of the formation.
+      properties:
+        metaInformation:
+          $ref: '#/components/schemas/FormationMetaInformation'
+        formationVehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormationVehicle'
+    FormationMetaInformation: # FoInfo
+      type: object
+      description: Meta information about the train formation
+      properties:
+        length:
+          type: number
+          format: float
+          example: 123.4
+        numberAxis:
+          type: integer
+          example: 22
+        numberSeats:
+          type: integer
+          example: 480
+        numberVehicles:
+          type: integer
+          example: 8
+    FormationVehicle: # Fahrzeuge.Fz  + Erweitert um FOS + Erweitert um CUS-FoKurz
+      type: object
+      description: The details of a vehicle in a formation, including the details of the vehicle and its position, as well as its scheduled stops
+      properties:
+        vehicleIdentifier:
+          $ref: '#/components/schemas/VehicleIdentifier'
+        position: # CUS.Reihung
+          type: integer
+          description: starts with 1, can be locomotive
+          example: 1
+        number: # CUS.OrdNr
+          type: integer
+          description: the vehicle number as displayed to customers, may be empty. If 0 then likely not intended for reservation.
+          example: 0
+        formationVehicleAtScheduledStops:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormationVehicleAtScheduledStop'
+        vehicleProperties:
+          $ref: '#/components/schemas/VehicleProperties'
+    VehicleIdentifier:
+      type: object
+      description: This element represents the identifying properties of a vehicle. NB! In some cases the vehicle properties are given for the 'parent' vehicle and intended to be repeated for its
+        child-vehicles (for example in case of "Gliederzüge"). In those cases, e.g., the typeCode and evn are given for the parent vehicle and the evn of its children differ only to allow a sub-identification
+        within the parent vehicle. An analogy would be the inherited last name of the parent and changing first names for the children (while the last name is not repeated).
+        To allow consumers identify this, we have the parentEvn property, which is empty in most cases and repeats the same parents in case of the described situation.
+      properties:
+        typeCode: # FOS.fahrtypcode
+          type: integer
+          description: the type code of the vehicle as defined by the federal office of transportation in Switzerland. Inherited if parent exists.
+          example: 6000
+        typeCodeName: # CUS.ZbpTyp / FOS.zbpBezeichnung
+          type: string
+          description: the name of the type coe of the vehicle
+          example: 'RABe515_1'
+        buildTypeCode: # FOS.fahrzeug.key, ff.
+          type: string
+          description: the type code of the vehicle as defined on a european level (part of evn, therefore string)
+          example: '94'
+        countryCode:
+          type: string
+          description: the country code (part of evn, therefore string)
+          example: '85'
+        vehicleNumber:
+          type: string
+          description: the unique number (part of evn, therefore string)
+          example: '7515005'
+        checkNumber:
+          type: string
+          description: a check code (part of evn, therefore string)
+          example: '7'
+        evn:
+          type: string
+          description: the european vehicle number, may be a pseudo-evn if this is a "child" vehicle (see also parentEvn)
+          example: '00007515005-7'
+        parentEvn:
+          type: string
+          description: the EVN of the parent vehicle either empty or referring to a "parent" if this given vehicle is a "child"
+          example: '94857515005-7'
+    FormationVehicleAtScheduledStop: # new element to wrap or unwrap the CUS short string details for a vehicle, but if no CUS we leave certain things empty
+      type: object
+      description: The content of this element depends on the availability of CUS data. If CUS data is given, then it contains the formation aspects encoded in the CUS short string, and maps it onto each vehicle per scheduled point. If we DO NOT HAVE CUS data then this only contains the start and end stop points of the formation and no track, sector, or other data.
+      properties:
+        stopPoint:
+          $ref: '#/components/schemas/StopPoint'
+        stopTime:
+          $ref: '#/components/schemas/StopTime'
+        track:
+          $ref: '#/components/schemas/Track'
+        sectors:
+          type: string
+          description: describes which sectors the given vehicles spans, e.g. 'A,B' or 'A'. Notably,
+            it does not describe the extent within the sector, for that the short string should be
+            consulted. May be "N/A".
+          example: 'D'
+        accessToPreviousVehicle:
+          type: boolean
+          description: whether it is possible to move from current position to the preceding vehicle.
+          example: false
+    StopPoint: # Bp/BpId
+      type: object
+      description: A station the train or parts of it will stop at
+      properties:
+        uic: # BPUIC
+          type: integer
+          example: 8500218
+        name: # lookup in atlas
+          type: string
+          example: 'Olten'
+    StopTime: # Zeit
+      type: object
+      description: The departure and arrival times at a stop
+      properties:
+        arrivalTime: # AbKb/AnKb, AbIst/AnIst, AbErw/AnErw
+          type: string
+          description: the scheduled arrival time, if not given the expected time, if not given the predicted time, if not given null
+          example: '2025-08-20T06:08:30+02:00'
+        departureTime:
+          type: string
+          description: the scheduled departure time, if not given the expected time, if not given the predicted time, if not given null
+          example: '2025-08-20T06:08:31+02:00'
+    Track: # Gleis
+      type: string
+      description: Either the scheduled departure (or arrival) track, if the scheduled is unknonw, it is the effective track. May be "N/A".
+      example: '9'
+    VehicleProperties: #CUS.Fz + FOS.fahrzeugtyp + FOS.fahrzeug
+      type: object
+      properties:
+        length: # CUS.Laenge
+          type: number
+          format: float
+          example: 123.4
+        fromStop: # CUS. Start/EndBp
+          $ref: '#/components/schemas/StopPoint'
+        toStop:
+          $ref: '#/components/schemas/StopPoint'
+        numberRestaurantSpace:
+          type: integer
+          example: 1
+        numberBeds:
+          type: integer
+          example: 1
+        numberBikeHooks:
+          type: integer
+          example: 1
+        number1class:
+          type: integer
+          example: 10
+        number2class:
+          type: integer
+          example: 20
+        bikePlatform:
+          type: boolean
+          example: true
+        emergencyCallSystem:
+          type: boolean
+          example: false
+        lowFloorTrolley:
+          type: boolean
+          example: true
+        climated:
+          type: boolean
+          example: true
+        closed:
+          type: boolean
+          example: true
+        vehicleWillBePutAway:
+          type: boolean
+          example: false
+        trolleyStatus:
+          type: string
+          enum: [ GeschlossenTechnisch, GeschlossenBetrieblich, RestaurantUnbedient, RestaurantUnbedientDeklassiert, Deklassiert, Normal ]
+          description: >
+            The status of a trolley as part of a formation:
+            * GeschlossenTechnisch: trolley technically closed
+            * GeschlossenBetrieblich: trolley operationally closed
+            * RestaurantUnbedient: restaurant not serviced
+            * RestaurantUnbedientDeklassiert: restaurant not serviced and class limitation revoked
+            * Deklassiert: trolley class limitations revoked
+            * Normal: no particular status
+          example: 'Normal'
+        accessibilityProperties:
+          $ref: '#/components/schemas/AccessibilityProperties'
+        pictoProperties:
+          $ref: '#/components/schemas/PictoProperties'
+        vehicleRelation:
+          $ref: '#/components/schemas/VehicleRelation'
+    AccessibilityProperties: # new objects filled in from FOS.fahrzeug
+      type: object
+      description: These properties contribute to accessibility assessments of a formation
+      properties:
+        numberWheelchairSpaces:
+          type: integer
+          example: 4
+        numberWheelchairSpaces1class:
+          type: integer
+          example: 1
+        numberWheelchairSpaces2class:
+          type: integer
+          example: 1
+        wheelchairToilet:
+          type: boolean
+          example: true
+        wheelchairAccessibleRestaurant:
+          type: boolean
+          example: true
+        disabledCompartment:
+          type: boolean
+          example: false
+        wheelchairSymbolProperties:
+          $ref: '#/components/schemas/WheelchairSymbolProperties'
+    WheelchairSymbolProperties: # new objects fillesd in from FOS.fahrzeug
+      type: object
+      description: These properties are required to define the wheelchair symbol as per [LINK](https://www.xn--v-info-vxa.ch/de/datenmanagement/barrierefreier-zugang/barrierefreiheit-der-fahrplanauskunft)
+      properties:
+        foldingRamp:
+          type: boolean
+          example: true
+        heightBoardingPlatform:
+          type: number
+          format: float
+          example: 0.2
+        gapBridging:
+          type: boolean
+          example: true
+    PictoProperties: # new objects filled in from FOS.fahrzeug
+      type: object
+      description: This element includes booleans indicating if various pictographic pictures are available on the outside of the trolley.
+      properties:
+        wheelchairPicto:
+          type: boolean
+          example: true
+        bikePicto:
+          type: boolean
+          example: true
+        strollerPicto:
+          type: boolean
+          example: false
+        familyZonePicto:
+          type: boolean
+          example: false
+        businessZonePicto:
+          type: boolean
+          example: false
+    VehicleRelation: # CUS.FzBeziehung
+      type: object
+      description: This element may be null. It allows tracking the origin and destination journey of a vehicle. The previous ended in the start stop point, while the next will follow at the end stop. However, neither of these are useful for publication to end users.
+        While, the given direct trolley sequence is relevant and intended for communication.
+      properties:
+        nextVehicleJourney:
+          $ref: '#/components/schemas/AdvancedJourneyInformation'
+        previousVehicleJourney:
+          $ref: '#/components/schemas/AdvancedJourneyInformation'
+        directTrolleys:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectTrolleyInformation'
+    AdvancedJourneyInformation: # new container element to hold journey and vehicle meta info
+      type: object
+      description: This element is mainly used as a container for the journey and vehicle meta info.
+      properties:
+        journeyMetaInformation:
+          $ref: '#/components/schemas/JourneyMetaInformation'
+        trainMetaInformation:
+          $ref: '#/components/schemas/TrainMetaInformation'
+    DirectTrolleyInformation: # new object to hold the details for direkte wagenlauf / direct trolley
+      type: object
+      description: When a direct trolley is used this references the advanced data and links the trolleys
+      properties:
+        index:
+          type: integer
+          description: negativ = predecessory, positiv = successor
+          example: -1
+        advancedJourneyInformation:
+          $ref: '#/components/schemas/AdvancedJourneyInformation'
+    VehicleRelationship: #VmBeziehung
+      type: object
+      description: This element describes the relationship details of a vehicle journey that allows to understand how a vehicle journey changes. The second advanced journey information is only
+        provided for journeys that have a fork or union.
+      properties:
+        vehicleRelationshipDetails:
+          $ref: '#/components/schemas/VehicleRelationshipDetails'
+        advancedJourneyInformation1:
+          $ref: '#/components/schemas/AdvancedJourneyInformation'
+        advancedJourneyInformation2:
+          $ref: '#/components/schemas/AdvancedJourneyInformation'
+      required:
+        - vehicleRelationshipDetails
+        - advancedJourneyInformation1
+    VehicleRelationshipDetails: # VmFahrtInfo1 / 2
+      type: object
+      description: The details of a vehicle relationship.
+      properties:
+        relationshipType: #BezTyp
+          type: string
+          enum: [ N, V, D, E, F, T, U, W, Z ]
+          description: >
+            The type of relationship:
+            * N: to
+            * V: from
+            * D: relief
+            * E: substitute
+            * F: continuation
+            * T: separation
+            * U: re-routing
+            * W: turnaround
+            * Z: merge
+          example: 'N'
+        direction: # Richtung
+          type: string
+          enum: [ N, V ]
+          description: >
+            The direction of the relationship:
+            * N: relation in arriving direction
+            * V: relation in departing direction
+        stopPoint:
+          $ref: '#/components/schemas/StopPoint'
+    FormationAtScheduledStop: # new object to reflect the stop-perspective for formations
+      type: object
+      description: The formation short representation which holds true at a given scheduled stop
+      properties:
+        scheduledStop:
+          $ref: '#/components/schemas/ScheduledStop'
+        formationShort:
+          $ref: '#/components/schemas/FormationShort'
+    ScheduledStop: # VmFahrt.FahrtPunkt
+      type: object
+      properties:
+        stopPoint:
+          $ref: '#/components/schemas/StopPoint'
+        stopModifications: # Abweichung
+          type: integer
+          description: >
+            This is a bitstring <b>given as integer</b> for which the following holds:
+            Bit #1 = small delay arrival 
+            Bit #2 = small delay departure
+            Bit #3 = large delay arrival
+            Bit #4 = large delay departure
+            Bit #5 = track change arrival (#5 XOR #6 or both 0)
+            Bit #6 = track change departure (#5 XOR #6 or both 0)
+            Bit #7 = treat as #5 (#7 XOR #8 or both 0)
+            Bit #8 = treat as #6 (#7 XOR #8 or both 0)
+            Bit #9 = formation change arrival (excl. restaurant)
+            Bit #10 = formation change departure (excl. restaurant)
+            Bit #11 = cancellation arrival
+            Bit #12 = cancellation departure
+            Bit #13 = redirection arrival
+            Bit #14 = redirection departure
+            Bit #15 = less vehicles than planned departing
+            Bit #16 = unavailable wheelchair space departure (no formation change)
+            Bit #17 = unavailable restaurant departure (no formation change)
+            Bit #18 = unavailable family trolley departure (no formation change)
+            Bit #19 = train may have unscheduled stop
+            Bit #20 = N/A
+            Bit #21 = short-term cancellation arrival
+            Bit #22 = short-term cancellation departure
+            Bit #23 = short-term stopType change 
+            Bit #24 = unavailable low-floor trolley arrival (no formation change)
+            Bit #25 = unavailable low-floor trolley departure (no formation change)
+            Bit #26 = stopPoint added subsequently
+            Bit #27 = stopPoint on "forked path"
+            Bit #28 = stop on request triggered
+          example: 128
+        stopType: # Haltecode
+          type: string
+          enum: [ A, +A, B, BA, BE, D, +D, E, +E, H, -H, +H ]
+          description: >
+            What type of stop a scheduled stop point consitutes (default H)
+            * A  = stop for alighting
+            * +A = unscheduled stop for alighting
+            * B  = stop on request
+            * BA = stop on request for alighting
+            * BE = stop on request for boarding
+            * D  = non-stopping pass
+            * +D = unscheduled non-stopping pass
+            * E = stop for boarding
+            * H = stop
+            * -H = operational stop
+            * +H = unscheduled stop
+          example: H
+        stopTime:
+          $ref: '#/components/schemas/StopTime'
+        track:
+          $ref: '#/components/schemas/Track'
+    FormationShort: # FoKurz
+      type: object
+      description: A container for the formation short string and the vehicle goals
+      properties:
+        formationShortString: # AbIst
+          $ref: '#/components/schemas/FormationShortString'
+        vehicleGoals: # AbIstFzZiele
+          type: array
+          items:
+            $ref: '#/components/schemas/VehicleGoal'
+    FormationShortString: # FoKurz.AbIst
+      type: string
+      description: The formation's short string, consult the external [documentation](https://opentransportdata.swiss/en/formationsdaten/) for details
+    VehicleGoal: # FzZiel
+      type: object
+      description: Which vehicles (incl. locomotive) of the train are moving to the destination stop point
+      properties:
+        fromVehicleAtPosition: # PosVon
+          type: integer
+          example: 1
+        toVehicleAtPosition: # PosBis
+          type: integer
+          example: 4
+        destinationStopPoint:
+          $ref: '#/components/schemas/StopPoint'
