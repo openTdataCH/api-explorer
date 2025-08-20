@@ -21,6 +21,10 @@ function resolveVar(apiCfg, placeholder) {
     throw new Error(`Error API ${apiId}: missing secret defined for key ${secretKey}`);
   }
 
+  if (value === 'PLACEHOLDER') {
+    throw new Error(`Error API ${apiId}: found placeholder value for key ${secretKey}`);
+  }
+
   return value;
 }
 

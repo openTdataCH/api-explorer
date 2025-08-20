@@ -31,6 +31,19 @@ API_KEY_NEWAPI=PLACEHOLDER
 API_KEY_NEWAPI=eyJvcmciOiI2NDA....
 ```
 
+- add the key to `Build index.html landing page / API folders` task in [.github/workflows/publish-swagger.yml](./.github/workflows/publish-swagger.yml)
+
+```
+      - name: Build index.html landing page / API folders
+        env:
+          # from repo secrets https://github.com/openTdataCH/api-explorer/settings/secrets/actions
+          ... more keys
+          
+          API_KEY_NEWAPI: ${{ secrets.API_KEY_NEWAPI }}        
+        run: |
+          node scripts/render-openapi.mjs
+```
+
 - add a new entry in [apis.yaml](./apis.yaml). the id used will be used in the permalink URL, i.e. for `ojp1.0` the URL + path is https://opentdatach.github.io/api-explorer/ojp1.0/
 
 ```
@@ -38,7 +51,7 @@ apis:
   - id: new_service
     title: New Service
     map_secrets:
-      API_KEY: API_KEY_OJPFARE
+      API_KEY: API_KEY_NEWAPI
 ...
 ```
 
