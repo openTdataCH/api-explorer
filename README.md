@@ -38,7 +38,7 @@ apis:
   - id: new_service
     title: New Service
     map_secrets:
-      API_KEY: API_KEY_OJPFARE
+      API_KEY: API_KEY_NEWAPI
 ...
 ```
 
