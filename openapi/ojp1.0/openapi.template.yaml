@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: "3.0.3"
 info:
-  title: Swiss OJP 1.0 OpenAPI explorer
-  version: '1.1'
+  title: "Swiss OJP 1.0 OpenAPI explorer"
+  version: "1.1"
   description: |
     This swagger introduces the list of provided services the Swiss OJP 1.0 service. The interface follows the CEN standard interface OJP (Open API for distributed Journey Planning).
     Keys for the API can be issued in our API manager https://api-manager.opentransportdata.swiss/.
 
-    You can alter the different examples provided. Some parts are commented out. You need to make them valid again, in order to get a useful response (e.g. set it to the current date or time)
+    You can alter the different examples provided. Some parts are commented out. You need to make them valid again, in order to get a useful response (e.g. set it to the current date or time).
 
     We offer currently tests for the following services:
       - OJPLocationRequest: LIR
@@ -14,7 +14,7 @@ info:
       - OJPTripRequest: TR
       - OJPTripInfoRequest: TIR
 externalDocs:
-  description: OJP documentation
+  description: "OJP documentation"
   url: https://transmodel-cen.eu/index.php/ojp/
 servers:
   - url: https://api.opentransportdata.swiss
@@ -29,9 +29,9 @@ security:
 paths:
   /ojp2020:
     post:
-      summary: OJP 1.0 acccess
-      operationId: OJP1.0
-      description: OJP is a traditional API, where the operation definitions is done in body of the post request
+      summary: "OJP 1.0 acccess"
+      operationId: "OJP1.0"
+      description: "OJP is a traditional API, where the operation definitions is done in body of the post request"
       requestBody:
         required: true
         content:
@@ -43,8 +43,8 @@ paths:
                 wrapped: true
             examples:
               exampleLIR:
-                summary: LIR - Simple
-                description: Simple OJPLocationInformationtRequest for Bern
+                summary: "LIR - Simple"
+                description: "Simple OJPLocationInformationtRequest for Bern"
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.siri.org.uk/siri" version="1.0" xmlns:ojp="http://www.vdv.de/ojp" xsi:schemaLocation="http://www.siri.org.uk/siri ../ojp-xsd-v1.0/OJP.xsd">
@@ -67,8 +67,8 @@ paths:
                       </OJPRequest>
                    </OJP>
               exampleSER:
-                summary: SER - Simple
-                description: Simple OJPStopEventRequest for Bern
+                summary: "SER - Simple"
+                description: "Simple OJPStopEventRequest for Bern"
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.siri.org.uk/siri" version="1.0" xmlns:ojp="http://www.vdv.de/ojp" xsi:schemaLocation="http://www.siri.org.uk/siri ../ojp-xsd-v1.0/OJP.xsd">
@@ -103,15 +103,15 @@ paths:
                       </OJPRequest>
                   </OJP>
               exampleTR:
-                summary: TR - Simple
-                description: Simple OJPTripRequest
+                summary: "TR - Simple"
+                description: "Simple OJPTripRequest"
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.siri.org.uk/siri" version="1.0" xmlns:ojp="http://www.vdv.de/ojp" xsi:schemaLocation="http://www.siri.org.uk/siri ../ojp-xsd-v1.0/OJP.xsd">
                       <OJPRequest>
                           <ServiceRequest>
                               <RequestTimestamp>2025-09-09T14:45:04.318Z</RequestTimestamp>
-                              <RequestorRef>MENTZRegTest</RequestorRef>
+                              <RequestorRef>API-Explorer</RequestorRef>
                               <ojp:OJPTripRequest>
                                   <RequestTimestamp>2025-09-09T14:45:04.318Z</RequestTimestamp>
                                   <MessageIdentifier>TR-1a1</MessageIdentifier>
@@ -140,15 +140,15 @@ paths:
                       </OJPRequest>
                   </OJP>
               exampleTIR:
-                summary: TIR - Simple
-                description: Simple OJPTripInformationRequest
+                summary: "TIR - Simple"
+                description: "Simple OJPTripInformationRequest"
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.siri.org.uk/siri" version="1.0" xmlns:ojp="http://www.vdv.de/ojp" xsi:schemaLocation="http://www.siri.org.uk/siri ../ojp-xsd-v1.0/OJP.xsd">
                       <OJPRequest>
                           <ServiceRequest>
                               <RequestTimestamp>2025-09-09T14:13:22.070Z</RequestTimestamp>
-                              <RequestorRef>MENTZRegTest</RequestorRef>
+                              <RequestorRef>API-Explorer</RequestorRef>
                               <ojp:OJPTripInfoRequest>
                                   <RequestTimestamp>2025-09-09T14:13:22.070Z</RequestTimestamp>
                                   <MessageIdentifier>TIR-1a</MessageIdentifier>
@@ -161,7 +161,7 @@ paths:
                   </OJP>
       responses:
         '401':
-          description: Unauthorized
+          description: "Unauthorized"
           content:
             application/json:
               schema:
@@ -173,12 +173,12 @@ paths:
                   - error
               examples:
                 exampleAX:
-                  summary: Wrong or no key provided
-                  description: Get a correct key and apply it correctly.
+                  summary: "Wrong or no key provided"
+                  description: "Get a correct key and apply it correctly."
                   value:
-                    error: Authorization field missing
+                    error: "Authorization field missing"
         '429':
-          description: Rate limit exceeded
+          description: "Rate limit exceeded"
           content:
             application/json:
               schema:
@@ -190,7 +190,7 @@ paths:
                   - error
               examples:
                 exampleAY:
-                  summary: Too many requests
-                  description: Wait some time till your key allows further requests or get a API key with a higher rate limit.
+                  summary: "Too many requests"
+                  description: "Wait some time till your key allows further requests or get a API key with a higher rate limit."
                   value:
-                    error: Rate limit exceeded
+                    error: "Rate limit exceeded"
