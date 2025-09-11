@@ -345,7 +345,7 @@ paths:
                 description: "You need to copy a valid JourneyRef from the Service of a recently obtained. Operating day also needs to set to a valid day."
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
-                  OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
+                  <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
                   	<OJPRequest>
                   		<siri:ServiceRequest>
                   			<siri:RequestTimestamp>2025-09-11T14:20:50+02:00</siri:RequestTimestamp>
