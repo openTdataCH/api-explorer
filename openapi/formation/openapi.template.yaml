@@ -80,7 +80,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '2025-08-20'
+            example: '{{today}}'
         - in: query
           name: trainNumber
           description: The train number, for which to retrieve the formation data
@@ -192,7 +192,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '2025-08-20'
+            example: '{{today}}'
         - in: query
           name: trainNumber
           description: The train number, for which to retrieve the formation data
@@ -306,7 +306,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '2025-08-20'
+            example: '{{today}}'
         - in: query
           name: trainNumber
           description: The train number, for which to retrieve the formation data
@@ -437,7 +437,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '2025-08-20'
+            example: '{{today}}'
         - in: query
           name: trainNumber
           description: The train number, for which to retrieve the formation data
@@ -552,7 +552,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '2025-08-20'
+            example: '{{today}}'
         - in: query
           name: trainNumber
           description: The train number, for which to retrieve the formation data
@@ -666,7 +666,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '2025-08-20'
+            example: '{{today}}'
         - in: query
           name: trainNumber
           description: The train number, for which to retrieve the formation data
@@ -779,7 +779,7 @@ components:
       properties:
         lastUpdate: # VmDetail.LetzteAktualisierung
           type: string
-          example: '2025-08-20T20:05:18.068+02:00'
+          example: '{{isoTimestamp}}'
         journeyMetaInformation:
           $ref: '#/components/schemas/JourneyMetaInformation'
         trainMetaInformation:
@@ -842,7 +842,7 @@ components:
           example: 'ch:1:sjyid:100015:2808-002'
         operationDate: # Betriebstag
           type: string
-          example: '2025-08-20'
+          example: '{{today}}'
     TrainMetaInformation: # VmDetail
       type: object
       description: Various details about the whole train
@@ -989,11 +989,11 @@ components:
         arrivalTime: # AbKb/AnKb, AbIst/AnIst, AbErw/AnErw
           type: string
           description: the scheduled arrival time, if not given the expected time, if not given the predicted time, if not given null
-          example: '2025-08-20T06:08:30+02:00'
+          example: '{{isoTimestamp}}'
         departureTime:
           type: string
           description: the scheduled departure time, if not given the expected time, if not given the predicted time, if not given null
-          example: '2025-08-20T06:08:31+02:00'
+          example: '{{isoTimestamp}}'
     Track: # Gleis
       type: string
       description: Either the scheduled departure (or arrival) track, if the scheduled is unknonw, it is the effective track. May be "N/A".
