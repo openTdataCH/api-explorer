@@ -16,23 +16,6 @@
   <script>
     const PRESET_BEARER = "${API_KEY}";
 
-    const ui = SwaggerUIBundle({
-      url: './openapi.yaml',
-      dom_id: '#swagger',
-      deepLinking: true,
-      presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-      layout: 'StandaloneLayout',
-      tryItOutEnabled: true,
-      requestInterceptor: req => {
-        req.headers.Authorization = 'Bearer ' + PRESET_BEARER;
-        return req;
-      },
-      onComplete: () => {
-        ui.preauthorizeApiKey("bearerAuth", PRESET_BEARER);
-      },
-    });
-
-    window.ui = ui;
     function todayYMD(tz = 'Europe/Zurich') {
       const p = new Intl.DateTimeFormat('en-CA', {
         timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'
@@ -52,6 +35,30 @@
       const ms = String(d.getUTCMilliseconds()).padStart(3, '0');
       return `${y}-${m}-${day}T${hh}:${mm}:${ss}.${ms}Z`;
     }
+
+    (async () => {
+      let yamlText = await (await fetch('./openapi.yaml')).text();
+
+      const spec = jsyaml.load(yamlText);
+
+      const ui = SwaggerUIBundle({
+        spec,
+        dom_id: '#swagger',
+        deepLinking: true,
+        presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+        layout: 'StandaloneLayout',
+        tryItOutEnabled: true,
+        requestInterceptor: req => {
+          req.headers.Authorization = 'Bearer ' + PRESET_BEARER;
+          return req;
+        },
+        onComplete: () => {
+          ui.preauthorizeApiKey("bearerAuth", PRESET_BEARER);
+        },
+      });
+
+      window.ui = ui;
+    })();
   </script>
 </body>
 </html>
