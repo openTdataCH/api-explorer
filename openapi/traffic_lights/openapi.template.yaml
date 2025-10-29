@@ -1,0 +1,946 @@
+openapi: 3.0.3
+info:
+  version: '1.0' 
+  title: OCIT-C light READ service
+  description: Open Communication Interface for Road Traffic Control Systems
+  contact:
+    name: Open-Data-Plattform Mobilität Schweiz
+    url: https://opentransportdata.swiss
+    email: opendata@sbb.ch
+  license:
+    name: Allgemeine Geschäftsbedingungen ASTRA
+    url: https://opentransportdata.swiss/de/tac-fedro/
+servers:
+  - url: https://api.opentransportdata.swiss/TDP/Rest_OcitC/Read/v1
+    description: Open data platform mobility Switzerland
+security:
+  - bearerAuth: []
+paths:
+  /areas:
+    get:
+      description: Get all areas which are avaiable in this service. Basic request to check aviability of areaIds.
+      summary: Get all areas.
+      operationId: getAreas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Areas'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '500':
+          description: Internal Server Error
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /areas/{areaId}:
+    get:
+      summary: Get an area.
+      operationId: getAreaById
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+  /intersections/{areaId}:
+    get:
+      summary: Get all intersections of an area.
+      operationId: getIntersections
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Intersections'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+  /intersections/{areaId}/{unitId}:
+    get:
+      summary: Get one intersection.
+      operationId: getIntersectionById
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Intersection'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '409':
+          description: Conflict
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+        - name: unitId
+          description: Unit Identifier ([[[system]-][[subsystem]-]unit)
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: '172'
+  /snippets:
+    get:
+      summary: |-
+        Get all snippets of all intersections of all areas.
+        with <lastRecordId>: snippets that have been received since the snippets with the given recordId
+        without <LastRecordId>: snippets that form an aggegated current state of all measurements
+      operationId: getSnippets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnippetsDoc'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: lastRecordId
+          description: The id of the last record that the client has already received. If no lastRecordId is provided, the current snippets status will be returned.
+          in: query
+          required: false
+          deprecated: false
+          schema:
+            type: string
+            example: '34049787-be50-4c0f-a444-cea18c2bb8da'
+  /snippets/{areaId}:
+    get:
+      summary: |-
+        Get snippets of all intersections of one area.
+        with <lastRecordId>: snippets that have been received for this area since the snippets with the given recordId
+        without <LastRecordId>: snippets that form an aggregated current state of all measurements for the intersections of this area
+      operationId: getSnippetsOfArea
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnippetsDoc'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+        - name: lastRecordId
+          description: The id of the last record that the client has already received. If no lastRecordId is provided, the current snippets status will be returned.
+          in: query
+          required: false
+          deprecated: false
+          schema:
+            type: string
+            example: '34049787-be50-4c0f-a444-cea18c2bb8da'
+  /snippets/{areaId}/{unitId}:
+    get:
+      summary: |-
+        Get snippets of one intersection of one area.
+        with <lastRecordId>: snippets that have been received for this intersection since the snippets with the given recordId
+        without <LastRecordId>: snippets that form an aggregated current state of all measurements for this intersection
+      operationId: getSnippetsOfIntersection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnippetsDoc'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+        - name: unitId
+          description: Unit Identifier ([[[system]-][[subsystem]-]unit)
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: '172'
+        - name: lastRecordId
+          description: The id of the last record that the client has already received. If no lastRecordId is provided, the current snippets status will be returned.
+          in: query
+          required: false
+          deprecated: false
+          schema:
+            type: string
+            example: '34049787-be50-4c0f-a444-cea18c2bb8da'
+  /supplies/{areaId}:
+    get:
+      summary: Get all supplies of an area.
+      operationId: getSuppliesOfArea
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Supplies'
+        '500':
+          description: Internal Server Error
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+  /supplies/{areaId}/{unitId}:
+    get:
+      summary: Get supplies of an intersection.
+      operationId: getSuppliesOfIntersection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Supplies'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '409':
+          description: Conflict
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+        - name: unitId
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: '172'
+  /supplies/{areaId}/{unitId}/{provider}:
+    get:
+      summary: Get one supply.
+      operationId: getSupplyById
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Supply'
+        '403':
+          description: Forbidden
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+      parameters:
+        - name: areaId
+          description: Area Identifier
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: 'ZH.CH:01'
+        - name: unitId
+          description: Unit Identifier ([[[system]-][[subsystem]-]unit)
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: '172'
+        - name: provider
+          in: path
+          required: true
+          deprecated: false
+          schema:
+            type: string
+            example: '(not_used)'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Areas:
+      type: object
+      properties:
+        Area:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+    ODCount:
+      type: object
+      properties:
+        FixedInterval:
+          type: number
+          format: double
+        CycleInterval:
+          type: number
+          format: double
+        Channel:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        SequenceNumber:
+          type: integer
+          format: int64
+        Channels:
+          type: array
+          items:
+            type: integer
+            minimum: -2147483648
+            maximum: 2147483647
+        Count:
+          type: number
+          format: double
+        Counts:
+          type: array
+          items:
+            type: number
+            format: double
+    GreenPercentage:
+      type: object
+      properties:
+        FixedInterval:
+          type: number
+          format: double
+        CycleInterval:
+          type: number
+          format: double
+        Channel:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        SequenceNumber:
+          type: integer
+          format: int64
+        Channels:
+          type: array
+          items:
+            type: integer
+            minimum: -2147483648
+            maximum: 2147483647
+        Percentage:
+          type: number
+          format: double
+        Percentages:
+          type: array
+          items:
+            type: number
+            format: double
+    SignalGroups:
+      type: object
+      properties:
+        SignalGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignalGroup'
+    Snippets:
+      type: object
+      properties:
+        AreaId:
+          type: string
+        UnitId:
+          $ref: '#/components/schemas/UnitId'
+        Provider:
+          type: string
+        Snippet:
+          type: array
+          items:
+            $ref: '#/components/schemas/Snippet'
+    SignalGroup:
+      type: object
+      properties:
+        ChannelInfo:
+          $ref: '#/components/schemas/ChannelInfo'
+        IntendedFor:
+          type: string
+        Coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        Lanes:
+          $ref: '#/components/schemas/Lanes'
+    Coordinates:
+      type: object
+      properties:
+        EPSGCode:
+          type: integer
+          minimum: 0
+          maximum: 65535
+        Longitude:
+          type: number
+          format: double
+        Latitude:
+          type: number
+          format: double
+    ChannelInfo:
+      type: object
+      properties:
+        Channel:
+          type: integer
+        Name:
+          type: string
+        CodeName:
+          type: string
+        TestOnly:
+          type: boolean
+          default: false
+    Supplies:
+      type: object
+      properties:
+        Supply:
+          type: array
+          items:
+            $ref: '#/components/schemas/Supply'
+    SpillbackLength:
+      type: object
+      properties:
+        FixedInterval:
+          type: number
+          format: double
+        CycleInterval:
+          type: number
+          format: double
+        Channel:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        SequenceNumber:
+          type: integer
+          format: int64
+        Channels:
+          type: array
+          items:
+            type: integer
+            minimum: -2147483648
+            maximum: 2147483647
+        Length:
+          type: number
+          format: double
+        Lengths:
+          type: array
+          items:
+            type: number
+            format: double
+    Name:
+      type: object
+      properties:
+        Language:
+          type: string
+        Value:
+          type: string
+    DriveAwayHeadway:
+      type: object
+      properties:
+        FixedInterval:
+          type: number
+          format: double
+        CycleInterval:
+          type: number
+          format: double
+        Channel:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        SequenceNumber:
+          type: integer
+          format: int64
+        MeanDuration:
+          type: number
+          format: double
+        Duration:
+          type: array
+          items:
+            type: number
+            format: double
+    Intersection:
+      type: object
+      properties:
+        DefaultLanguage:
+          type: string
+        AreaId:
+          type: string
+        Identification:
+          $ref: '#/components/schemas/Identification'
+        VersionTimestamp:
+          type: string
+        VersionNumber:
+          type: string
+        Coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        CodeName:
+          type: string
+        ShortName:
+          type: string
+        Name:
+          type: array
+          items:
+            $ref: '#/components/schemas/Name'
+    MeasurementType_String:
+      type: string
+      enum:
+        - LOS
+        - SpillbackLength
+        - GreenPercentage
+        - ODCount
+        - DriveAwayHeadway
+        - D
+        - S
+        - OZS:203_SD
+    Identification:
+      type: object
+      properties:
+        UnitId:
+          $ref: '#/components/schemas/UnitId'
+        OCITOutstationId:
+          $ref: '#/components/schemas/OCITOutstationId'
+    Interval:
+      type: object
+      properties:
+        IntervalChoice:
+          $ref: '#/components/schemas/IntervalChoiceType_String'
+        Duration:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        Each:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+    Detectors:
+      type: object
+      properties:
+        Detector:
+          type: array
+          items:
+            $ref: '#/components/schemas/Detector'
+    OCITOutstationId:
+      type: object
+      properties:
+        Center:
+          type: integer
+          minimum: 0
+          maximum: 65535
+        Controller:
+          type: integer
+          minimum: 0
+          maximum: 65535
+        SubIntersection:
+          type: integer
+          minimum: 0
+          maximum: 65535
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Short status text
+        code:
+          type: integer
+          description: Status code
+          minimum: -2147483648
+          maximum: 2147483647
+        message:
+          type: string
+          description: Verbose message
+    UnitId:
+      type: object
+      properties:
+        System:
+          type: integer
+          minimum: 0
+          maximum: 65535
+        Subsystem:
+          type: integer
+          minimum: 0
+          maximum: 65535
+        Unit:
+          type: integer
+          minimum: 0
+          maximum: 4294967295
+    LanePosition:
+      type: object
+      properties:
+        Lane:
+          type: string
+        Distance:
+          type: number
+          format: double
+    Measuring:
+      type: object
+      properties:
+        Type:
+          $ref: '#/components/schemas/MeasurementType_String'
+        Channel:
+          type: integer
+        Name:
+          type: string
+    LOS:
+      type: object
+      properties:
+        FixedInterval:
+          type: number
+          format: double
+        CycleInterval:
+          type: number
+          format: double
+        Channel:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        SequenceNumber:
+          type: integer
+          format: int64
+        Letter:
+          type: string
+        Letters:
+          type: array
+          items:
+            type: string
+        Percentages:
+          type: array
+          items:
+            type: number
+            format: double
+    Supply:
+      type: object
+      properties:
+        AreaId:
+          type: string
+        Provider:
+          type: string
+        Identification:
+          $ref: '#/components/schemas/Identification'
+        Version:
+          type: string
+        ValidFrom:
+          type: string
+        Detectors:
+          $ref: '#/components/schemas/Detectors'
+        DetectorReferences:
+          $ref: '#/components/schemas/Detectors'
+        SignalGroups:
+          $ref: '#/components/schemas/SignalGroups'
+        SignalGroupReferences:
+          $ref: '#/components/schemas/SignalGroups'
+        MeasuredValues:
+          $ref: '#/components/schemas/MeasuredValues'
+        MeasuredValueReferences:
+          $ref: '#/components/schemas/MeasuredValues'
+        ComputedValues:
+          $ref: '#/components/schemas/ComputedValues'
+    IntervalChoiceType_String:
+      type: string
+      enum:
+        - Time
+        - Cycle
+    MeasuredValues:
+      type: object
+      properties:
+        MeasuredValue:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeasuredValue'
+    Area:
+      type: object
+      properties:
+        DefaultLanguage:
+          type: string
+        AreaId:
+          type: string
+        Name:
+          type: array
+          items:
+            $ref: '#/components/schemas/Name'
+    MeasuredValue:
+      type: object
+      properties:
+        Type:
+          $ref: '#/components/schemas/MeasurementType_String'
+        ChannelInfo:
+          $ref: '#/components/schemas/ChannelInfo'
+        IntendedFor:
+          type: string
+        Coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        LanePosition:
+          $ref: '#/components/schemas/LanePosition'
+    Detector:
+      type: object
+      properties:
+        Type:
+          $ref: '#/components/schemas/MeasurementType_String'
+        ChannelInfo:
+          $ref: '#/components/schemas/ChannelInfo'
+        IntendedFor:
+          type: string
+        Coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        DesignType:
+          type: string
+        LanePosition:
+          $ref: '#/components/schemas/LanePosition'
+    ComputedValues:
+      type: object
+      properties:
+        ComputedValue:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComputedValue'
+    ComputedValue:
+      type: object
+      properties:
+        Type:
+          $ref: '#/components/schemas/MeasurementType_String'
+        ChannelInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelInfo'
+        IntendedFor:
+          type: string
+        Lanes:
+          $ref: '#/components/schemas/Lanes'
+        Egress:
+          $ref: '#/components/schemas/Lanes'
+        Composition:
+          $ref: '#/components/schemas/Composition'
+        Occurrences:
+          $ref: '#/components/schemas/Occurrences'
+    Measurements:
+      type: object
+      properties:
+        LOS:
+          type: array
+          items:
+            $ref: '#/components/schemas/LOS'
+        SpillbackLength:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpillbackLength'
+        GreenPercentage:
+          type: array
+          items:
+            $ref: '#/components/schemas/GreenPercentage'
+        ODCount:
+          type: array
+          items:
+            $ref: '#/components/schemas/ODCount'
+        DriveAwayHeadway:
+          type: array
+          items:
+            $ref: '#/components/schemas/DriveAwayHeadway'
+    Composition:
+      type: object
+      properties:
+        Measuring:
+          type: array
+          items:
+            $ref: '#/components/schemas/Measuring'
+    Occurrences:
+      type: object
+      properties:
+        Event:
+          type: boolean
+          default: false
+        Interval:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interval'
+    Intersections:
+      type: object
+      properties:
+        Intersection:
+          type: array
+          items:
+            $ref: '#/components/schemas/Intersection'
+    Lanes:
+      type: object
+      properties:
+        Lane:
+          type: array
+          items:
+            type: string
+    SnippetsDoc:
+      type: object
+      properties:
+        LastRecordId:
+          type: string
+        Snippets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Snippets'
+    Snippet:
+      type: object
+      properties:
+        Timestamp:
+          type: string
+        Measurements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Measurements'
