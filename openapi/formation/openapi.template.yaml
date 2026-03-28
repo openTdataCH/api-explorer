@@ -14,7 +14,7 @@ info:
     CUS is available. CUS has only data for today + (max.!) 3 days.
     <br>
     <b>NOTE 3:</b> the service is provided by the team Systemaufgaben Kundeninformation Plus (SKI+) by the
-    order of the Federal Ofice of Transportation (FOT) in Switzerland.
+    order of the Federal Office of Transportation (FOT) in Switzerland.
     <br>
     <b>NOTE 4:</b> the data originates from the SKI realtime system's (CUS - CUstomer (information) System - VerkehrsMittel (VM)), and SBB's Formation-Services (FOS).
   contact:
@@ -278,7 +278,7 @@ paths:
         from SKI's real-time system CUS and SBB's system FOS.
         It combines the vehicle and stop-based perspectives to provide a full view.
         A documentation on how to interpret the short string of the stop-based perspective can be
-        found here [Shorstring](https://opentransportdata.swiss/en/formationsdaten/).
+        found here [Shortstring](https://opentransportdata.swiss/en/formationsdaten/).
       summary: List formations for a train
       operationId: getFormations
       parameters:
@@ -638,7 +638,7 @@ paths:
         from SKI's real-time system CUS and SBB's system FOS.
         It combines the vehicle and stop-based perspectives to provide a full view.
         A documentation on how to interpret the short string of the stop-based perspective can be
-        found here [Shorstring](https://opentransportdata.swiss/en/formationsdaten/).
+        found here [Shortstring](https://opentransportdata.swiss/en/formationsdaten/).
       summary: List formations for a train
       operationId: getFormationsV2
       parameters:
