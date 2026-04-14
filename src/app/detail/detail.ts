@@ -101,6 +101,13 @@ export class Detail implements OnInit, AfterViewInit {
     }
   }
 
+  private computeIndentationSize(apiSpecTextLine: string, placeholderMatch: string): number {
+    const placeholderMatchIdx = apiSpecTextLine.indexOf(placeholderMatch);
+    const indentationSize = placeholderMatchIdx + 1;
+
+    return indentationSize;
+  }
+
   private async parseYaml(appConfig: API_Config, yamlText: string): Promise<object> {
     const parsedStep1 = YAML.load(yamlText);
 
@@ -144,6 +151,13 @@ export class Detail implements OnInit, AfterViewInit {
         })();
 
         if (Array.isArray(value)) {
+          // in case of array values (i.e. XML response) insert the values and keep the identation
+          const indentationSize = this.computeIndentationSize(apiSpecTextLine, placeholderMatch);
+          const indentationPadText = ' '.repeat(indentationSize);
+          value.forEach(valueRow => {
+            const newSpecTextLine = indentationPadText + valueRow;
+            newSpecTextLines.push(newSpecTextLine);
+          });
         } else {
           const newSpecTextLine = apiSpecTextLine.replace(placeholderMatch, value);
           newSpecTextLines.push(newSpecTextLine);
