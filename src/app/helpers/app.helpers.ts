@@ -29,7 +29,7 @@ export class AppHelpers {
   }
 
   // UTC datetime with milliseconds and trailing Z
-  public static  nowZulu() {
+  public static nowZulu() {
     const d = new Date();
     const y = d.getUTCFullYear();
     const m = String(d.getUTCMonth() + 1).padStart(2, '0');
