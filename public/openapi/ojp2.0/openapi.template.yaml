@@ -48,21 +48,21 @@ paths:
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
                     <OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPLocationInformationRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>LIR-1i</siri:MessageIdentifier>
-                  				<InitialInput>
-                  					<Name>bern s</Name>
-                  				</InitialInput>
-                  				<Restrictions>
-                  					<NumberOfResults>3</NumberOfResults>
-                  				</Restrictions>
-                  			</OJPLocationInformationRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPLocationInformationRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>LIR-1i</siri:MessageIdentifier>
+                          <InitialInput>
+                            <Name>bern s</Name>
+                          </InitialInput>
+                          <Restrictions>
+                            <NumberOfResults>3</NumberOfResults>
+                          </Restrictions>
+                        </OJPLocationInformationRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleLIR2:
                 summary: "2. Location Information Service - topographic place"
@@ -70,23 +70,23 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPLocationInformationRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>LIR-1i</siri:MessageIdentifier>
-                  				<InitialInput>
-                  					<Name>Hof bei Uznach</Name>
-                  				</InitialInput>
-                  				<Restrictions>
-                  					<NumberOfResults>1</NumberOfResults>
-                  					<IncludePtModes>true</IncludePtModes>
-                  				</Restrictions>
-                  			</OJPLocationInformationRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPLocationInformationRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>LIR-1i</siri:MessageIdentifier>
+                          <InitialInput>
+                            <Name>Hof bei Uznach</Name>
+                          </InitialInput>
+                          <Restrictions>
+                            <NumberOfResults>1</NumberOfResults>
+                            <IncludePtModes>true</IncludePtModes>
+                          </Restrictions>
+                        </OJPLocationInformationRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleLIR3:
                 summary: "3. Location Information Service - with circle coordinates"
@@ -94,31 +94,31 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPLocationInformationRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>LIR-1a2</siri:MessageIdentifier>
-                  				<InitialInput>
-                  					<GeoRestriction>
-                  						<Circle>
-                  							<Center>
-                  								<siri:Longitude>8.538936</siri:Longitude>
-                  								<siri:Latitude>47.376569</siri:Latitude>
-                  							</Center>
-                  							<Radius>5000</Radius>
-                  						</Circle>
-                  					</GeoRestriction>
-                  				</InitialInput>
-                  				<Restrictions>
-                  					<Type>stop</Type>
-                  					<NumberOfResults>3</NumberOfResults>
-                  				</Restrictions>
-                  			</OJPLocationInformationRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPLocationInformationRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>LIR-1a2</siri:MessageIdentifier>
+                          <InitialInput>
+                            <GeoRestriction>
+                              <Circle>
+                                <Center>
+                                  <siri:Longitude>8.538936</siri:Longitude>
+                                  <siri:Latitude>47.376569</siri:Latitude>
+                                </Center>
+                                <Radius>5000</Radius>
+                              </Circle>
+                            </GeoRestriction>
+                          </InitialInput>
+                          <Restrictions>
+                            <Type>stop</Type>
+                            <NumberOfResults>3</NumberOfResults>
+                          </Restrictions>
+                        </OJPLocationInformationRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleLIR4:
                 summary: "4. Location Information Service - extended version"
@@ -126,52 +126,53 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPLocationInformationRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>LIR-3a</siri:MessageIdentifier>
-                  				<InitialInput>
-                  					<Name>hai</Name>
-                  				</InitialInput>
-                  				<Restrictions>
-                  					<Type>poi</Type>
-                  					<NumberOfResults>3</NumberOfResults>
-                  				</Restrictions>
-                  			</OJPLocationInformationRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPLocationInformationRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>LIR-3a</siri:MessageIdentifier>
+                          <InitialInput>
+                            <Name>hai</Name>
+                          </InitialInput>
+                          <Restrictions>
+                            <Type>poi</Type>
+                            <NumberOfResults>3</NumberOfResults>
+                          </Restrictions>
+                        </OJPLocationInformationRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleSER1:
                 summary: "5. Stop Event Service - simple"
                 description: "Simple OJPStopEventRequest for Bern"
+                # change here to sloids
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPStopEventRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>SER-1a2</siri:MessageIdentifier>
-                  				<Location>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8503000</siri:StopPointRef>
-                  						<Name>
-                  							<Text>Bern</Text>
-                  						</Name>
-                  					</PlaceRef>
-                  				</Location>
-                  				<Params>
-                  					<NumberOfResults>3</NumberOfResults>
-                  					<StopEventType>departure</StopEventType>
-                  				</Params>
-                  			</OJPStopEventRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPStopEventRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>SER-1a2</siri:MessageIdentifier>
+                          <Location>
+                            <PlaceRef>
+                              <siri:StopPointRef>8503000</siri:StopPointRef>
+                              <Name>
+                                <Text>Bern</Text>
+                              </Name>
+                            </PlaceRef>
+                          </Location>
+                          <Params>
+                            <NumberOfResults>3</NumberOfResults>
+                            <StopEventType>departure</StopEventType>
+                          </Params>
+                        </OJPStopEventRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleSER2:
                 summary: "6. Stop Event Service - complex"
@@ -179,37 +180,37 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPStopEventRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>SER-1d4</siri:MessageIdentifier>
-                  				<Location>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8592570</siri:StopPointRef>
-                  						<Name>
-                  							<Text>Schaffhausen, Quellenstrasse</Text>
-                  						</Name>
-                  					</PlaceRef>
-                  					<DepArrTime>{{isoTimestamp}}</DepArrTime>
-                  				</Location>
-                  				<Params>
-                  					<LineFilter>
-                  						<Line>
-                  							<!-- Set your line will be a SLNID in the future and desired direction "H" or "R"!  -->
-                  							<siri:LineRef>ojp:92003:B</siri:LineRef>
-                  							<siri:DirectionRef>R</siri:DirectionRef>
-                  						</Line>
-                  						<Exclude>true</Exclude>
-                  					</LineFilter>
-                  					<NumberOfResults>3</NumberOfResults>
-                  					<StopEventType>departure</StopEventType>
-                  				</Params>
-                  			</OJPStopEventRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPStopEventRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>SER-1d4</siri:MessageIdentifier>
+                          <Location>
+                            <PlaceRef>
+                              <siri:StopPointRef>8592570</siri:StopPointRef>
+                              <Name>
+                                <Text>Schaffhausen, Quellenstrasse</Text>
+                              </Name>
+                            </PlaceRef>
+                            <DepArrTime>{{isoTimestamp}}</DepArrTime>
+                          </Location>
+                          <Params>
+                            <LineFilter>
+                              <Line>
+                                <!-- Set your line will be a SLNID in the future and desired direction "H" or "R"!  -->
+                                <siri:LineRef>ojp:92003:B</siri:LineRef>
+                                <siri:DirectionRef>R</siri:DirectionRef>
+                              </Line>
+                              <Exclude>true</Exclude>
+                            </LineFilter>
+                            <NumberOfResults>3</NumberOfResults>
+                            <StopEventType>departure</StopEventType>
+                          </Params>
+                        </OJPStopEventRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleTR1:
                 summary: "7. Trip Service - Simple"
@@ -217,37 +218,37 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPTripRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>TR-1a1NOW</siri:MessageIdentifier>
-                  				<Origin>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8503308</siri:StopPointRef>
-                  						<Name>
-                  							<Text>Kloten</Text>
-                  						</Name>
-                  					</PlaceRef>
-                  				</Origin>
-                  				<Destination>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8503424</siri:StopPointRef>
-                  						<Name>
-                  							<Text>Schaffhausen</Text>
-                  						</Name>
-                  					</PlaceRef>
-                  				</Destination>
-                  				<Params>
-                  					<NumberOfResults>3</NumberOfResults>
-                  					<IncludeIntermediateStops>true</IncludeIntermediateStops>
-                  					<UseRealtimeData>explanatory</UseRealtimeData>
-                  				</Params>
-                  			</OJPTripRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPTripRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>TR-1a1NOW</siri:MessageIdentifier>
+                          <Origin>
+                            <PlaceRef>
+                              <siri:StopPointRef>8503308</siri:StopPointRef>
+                              <Name>
+                                <Text>Kloten</Text>
+                              </Name>
+                            </PlaceRef>
+                          </Origin>
+                          <Destination>
+                            <PlaceRef>
+                              <siri:StopPointRef>8503424</siri:StopPointRef>
+                              <Name>
+                                <Text>Schaffhausen</Text>
+                              </Name>
+                            </PlaceRef>
+                          </Destination>
+                          <Params>
+                            <NumberOfResults>3</NumberOfResults>
+                            <IncludeIntermediateStops>true</IncludeIntermediateStops>
+                            <UseRealtimeData>explanatory</UseRealtimeData>
+                          </Params>
+                        </OJPTripRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleTR2:
                 summary: "8. Trip Service - with via and dwell time"
@@ -255,46 +256,46 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPTripRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>TR-1e2</siri:MessageIdentifier>
-                  				<Origin>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8503000</siri:StopPointRef>
-                  						<LocationName>
-                  							<Text>Zürich HB</Text>
-                  						</LocationName>
-                  					</PlaceRef>
-                  					<DepArrTime>{{isoTimestamp}}</DepArrTime>
-                  				</Origin>
-                  				<Destination>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8503424</siri:StopPointRef>
-                  						<LocationName>
-                  							<Text>Schaffhausen</Text>
-                  						</LocationName>
-                  					</PlaceRef>
-                  				</Destination>
-                  				<Via>
-                  					<ViaPoint>
-                  						<siri:StopPointRef>8506000</siri:StopPointRef>
-                  						<LocationName>
-                  							<Text>Winterthur</Text>
-                  						</LocationName>
-                  					</ViaPoint>
-                  					<DwellTime>PT2H</DwellTime>
-                  				</Via>
-                  				<Params>
-                  					<NumberOfResults>1</NumberOfResults>
-                  					<IncludeIntermediateStops>true</IncludeIntermediateStops>
-                  				</Params>
-                  			</OJPTripRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPTripRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>TR-1e2</siri:MessageIdentifier>
+                          <Origin>
+                            <PlaceRef>
+                              <siri:StopPointRef>8503000</siri:StopPointRef>
+                              <LocationName>
+                                <Text>Zürich HB</Text>
+                              </LocationName>
+                            </PlaceRef>
+                            <DepArrTime>{{isoTimestamp}}</DepArrTime>
+                          </Origin>
+                          <Destination>
+                            <PlaceRef>
+                              <siri:StopPointRef>8503424</siri:StopPointRef>
+                              <LocationName>
+                                <Text>Schaffhausen</Text>
+                              </LocationName>
+                            </PlaceRef>
+                          </Destination>
+                          <Via>
+                            <ViaPoint>
+                              <siri:StopPointRef>8506000</siri:StopPointRef>
+                              <LocationName>
+                                <Text>Winterthur</Text>
+                              </LocationName>
+                            </ViaPoint>
+                            <DwellTime>PT2H</DwellTime>
+                          </Via>
+                          <Params>
+                            <NumberOfResults>1</NumberOfResults>
+                            <IncludeIntermediateStops>true</IncludeIntermediateStops>
+                          </Params>
+                        </OJPTripRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleTR3:
                 summary: "9. Trip Service - with a train with multiple destinations"
@@ -302,40 +303,40 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPTripRequest>
-                  				<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  				<siri:MessageIdentifier>TR-1r1</siri:MessageIdentifier>
-                  				<Origin>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8507000</siri:StopPointRef>
-                  						<Name>
-                  							<Text>Bern</Text>
-                  						</Name>
-                  					</PlaceRef>
-                  				</Origin>
-                  				<Destination>
-                  					<PlaceRef>
-                  						<siri:StopPointRef>8504128</siri:StopPointRef>
-                  						<Name>
-                  							<Text>Murten/Morat</Text>
-                  						</Name>
-                  					</PlaceRef>
-                  					<DepArrTime>{{isoTimestamp}}</DepArrTime>
-                  				</Destination>
-                  				<Params>
-                  					<NumberOfResults>3</NumberOfResults>
-                  					<IncludeAllRestrictedLines>true</IncludeAllRestrictedLines>
-                  					<IncludeTrackSections>true</IncludeTrackSections>
-                  					<IncludeLegProjection>true</IncludeLegProjection>
-                  					<IncludeIntermediateStops>true</IncludeIntermediateStops>
-                  				</Params>
-                  			</OJPTripRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPTripRequest>
+                          <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                          <siri:MessageIdentifier>TR-1r1</siri:MessageIdentifier>
+                          <Origin>
+                            <PlaceRef>
+                              <siri:StopPointRef>8507000</siri:StopPointRef>
+                              <Name>
+                                <Text>Bern</Text>
+                              </Name>
+                            </PlaceRef>
+                          </Origin>
+                          <Destination>
+                            <PlaceRef>
+                              <siri:StopPointRef>8504128</siri:StopPointRef>
+                              <Name>
+                                <Text>Murten/Morat</Text>
+                              </Name>
+                            </PlaceRef>
+                            <DepArrTime>{{isoTimestamp}}</DepArrTime>
+                          </Destination>
+                          <Params>
+                            <NumberOfResults>3</NumberOfResults>
+                            <IncludeAllRestrictedLines>true</IncludeAllRestrictedLines>
+                            <IncludeTrackSections>true</IncludeTrackSections>
+                            <IncludeLegProjection>true</IncludeLegProjection>
+                            <IncludeIntermediateStops>true</IncludeIntermediateStops>
+                          </Params>
+                        </OJPTripRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
               exampleTIR1:
                 summary: "10. Trip Information Service"
@@ -343,18 +344,18 @@ paths:
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns="http://www.vdv.de/ojp" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
-                  	<OJPRequest>
-                  		<siri:ServiceRequest>
-                  			<siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			<siri:RequestorRef>API-Explorer</siri:RequestorRef>
-                  			<OJPTripInfoRequest>
-                  			    <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
-                  			    <siri:MessageIdentifier>TIR-1a</siri:MessageIdentifier>
-                  			    <JourneyRef>ch:1:sjyid:100001:18355-001</JourneyRef>
-                  			    <OperatingDayRef>{{today}}</OperatingDayRef>
-                  			</OJPTripInfoRequest>
-                  		</siri:ServiceRequest>
-                  	</OJPRequest>
+                    <OJPRequest>
+                      <siri:ServiceRequest>
+                        <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                        <siri:RequestorRef>API-Explorer</siri:RequestorRef>
+                        <OJPTripInfoRequest>
+                            <siri:RequestTimestamp>{{isoTimestamp}}</siri:RequestTimestamp>
+                            <siri:MessageIdentifier>TIR-1a</siri:MessageIdentifier>
+                            <JourneyRef>ch:1:sjyid:100001:18355-001</JourneyRef>
+                            <OperatingDayRef>{{today}}</OperatingDayRef>
+                        </OJPTripInfoRequest>
+                      </siri:ServiceRequest>
+                    </OJPRequest>
                   </OJP>
       responses:
         "400":
