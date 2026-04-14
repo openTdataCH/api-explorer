@@ -1,0 +1,12 @@
+import * as OJP from 'ojp-sdk';
+
+import { PlaceholderContext, PlaceholderHandler } from './placeholder';
+import { OJP_PlaceholderHandler } from './ojp';
+
+export default class OJP_LIR_1_PlaceholderHandle extends OJP_PlaceholderHandler implements PlaceholderHandler {
+  public async resolve(context: PlaceholderContext): Promise<string | string[]> {
+    const request = OJP.LocationInformationRequest.initWithLocationName('Bern s');
+    const responseXML_Lines = await this.fetchResponse(context, request);
+    return responseXML_Lines;
+  }
+}
