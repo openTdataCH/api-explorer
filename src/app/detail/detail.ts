@@ -11,10 +11,24 @@ import { Footer } from '../shared/footer/footer';
 import { API_Config } from '../config/api-config';
 import { AppHelpers } from '../helpers/app.helpers';
 import { API_Tokens } from '../config/api-tokens.local';
+import { PlaceholderContext, PlaceholderHandler } from './placeholders/placeholder';
 
 interface PageModel {
   errorMessage: string | null,
   apiConfig: API_Config | null,
+};
+
+type PlaceholderModule = {
+  default: new () => PlaceholderHandler;
+};
+
+export type PlaceHolderKey =
+  | 'today'
+  | 'isoTimestamp';
+
+const handlerLoaders: Record<PlaceHolderKey, () => Promise<PlaceholderModule>> = {
+  today: () => import('./placeholders/today'),
+  isoTimestamp: () => import('./placeholders/iso-timestamp'),
 };
 
 @Component({
