@@ -159,7 +159,7 @@ paths:
                       </OJPRequest>
                   </OJP>
       responses:
-        '401':
+        "401":
           description: "Unauthorized"
           content:
             application/json:
@@ -176,7 +176,7 @@ paths:
                   description: "Get a correct key and apply it correctly."
                   value:
                     error: "Authorization field missing"
-        '429':
+        "429":
           description: "Rate limit exceeded"
           content:
             application/json:
