@@ -1,4 +1,4 @@
-name: Build & Publish Swagger UI (multi-apis)
+name: Build & Publish api-explorer via GH
 
 on:
   push:
