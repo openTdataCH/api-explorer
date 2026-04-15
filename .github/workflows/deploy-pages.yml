@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feature/ojp-response
+      # - feature/ojp-response
   workflow_dispatch:
 
 permissions:
