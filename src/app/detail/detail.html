@@ -1,0 +1,15 @@
+<div class="container py-4">
+  <header></header>
+
+  @if (this.model.errorMessage) {
+    <p class="error">{{ this.model.errorMessage }}</p>
+  }
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body p-4">
+      <div #swaggerContainer></div>
+    </div>
+  </div>
+
+  <footer></footer>
+</div>
