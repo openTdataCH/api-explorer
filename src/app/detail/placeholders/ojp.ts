@@ -4,14 +4,25 @@ import { PlaceholderContext, PlaceholderHandler } from './placeholder';
 import { API_Tokens } from '../../config/api-tokens';
 import { AppHelpers } from '../../helpers/app.helpers';
 
+type OJP_AnyRequest = OJP.LocationInformationRequest | OJP.OJPv1_LocationInformationRequest
+      | OJP.TripRequest | OJP.OJPv1_TripRequest;
+
 export abstract class OJP_PlaceholderHandler {
-  private buildSDK(context: PlaceholderContext): OJP.SDK<'2.0'> {
+  protected buildSDK(context: PlaceholderContext): OJP.AnySDK {
     let apiURL: string | null = null;
+    let ojpVersion: OJP.OJP_VERSION = '2.0';
     try {
       // convention: to build the URL: take first server.url + paths[0] found
       const apiHost = context.apiSpec.servers[0].url as string;
       const apiPath = Object.keys(context.apiSpec.paths)[0] as string;
       apiURL = apiHost + apiPath;
+
+      const requestPathKeys = Object.keys(context.apiSpec.paths);
+      const operationId: string = context.apiSpec.paths[requestPathKeys[0]].post.operationId;
+
+      if (operationId.toLowerCase().startsWith('ojp1.0')) {
+        ojpVersion = '1.0';
+      }
     } catch {
       throw new Error('Cant find apiURL in YAML spec');
     }
@@ -23,24 +34,21 @@ export abstract class OJP_PlaceholderHandler {
       url: apiURL,
       authToken: bearerToken,
     };
-    const sdk = OJP.SDK.create('odmch-api-explorer', stageConfig, 'de');
+    const sdk: OJP.AnySDK = (() => {
+      if (ojpVersion === '1.0') {
+        const legacySDK = OJP.SDK.v1('odmch-api-explorer', stageConfig, 'de');
+        return legacySDK;
+      }
+
+      const defaultSDK = OJP.SDK.create('odmch-api-explorer', stageConfig, 'de');
+      return defaultSDK;
+    })();
 
     return sdk;
   }
 
-  protected async fetchResponse(context: PlaceholderContext, request: OJP.LocationInformationRequest | OJP.TripRequest) {
-    let sdk: OJP.SDK<'2.0'> | null = null;
-    try {
-      sdk = this.buildSDK(context);
-    } catch (e) {
-      if (e instanceof Error) {
-        return '<Error>' + e.message + '</Error>';
-      }
-
-      return '<Error>' + String(e) + '</Error>';
-    }
-
-    try {
+  protected async fetchResponse(sdk: OJP.AnySDK, request: OJP_AnyRequest) {
+   try {
       await request.fetchResponse(sdk);
     } catch (e) {
       return '<Error>Invalid XML response</Error>';
