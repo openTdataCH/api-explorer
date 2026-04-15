@@ -159,6 +159,24 @@ paths:
                       </OJPRequest>
                   </OJP>
       responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/xml:
+              schema:
+                type: object
+                xml:
+                  name: OJP
+                  wrapped: true
+              examples:
+                lir_name:
+                  summary: LIR by name 'Bern s'
+                  value: |
+                    {{RESPONSE_XML_LIR1}}
+                tr_be_zh:
+                  summary: TR Bern Zürich
+                  value: |
+                    {{RESPONSE_XML_TR1}}
         "401":
           description: "Unauthorized"
           content:
