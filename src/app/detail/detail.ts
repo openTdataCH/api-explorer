@@ -27,6 +27,8 @@ export type PlaceHolderKey =
   | 'isoTimestamp'
   | 'RESPONSE_XML_LIR1'
   | 'RESPONSE_XML_TR1'
+  | 'REQUEST_XML_FR1'
+  | 'RESPONSE_XML_FR2'
   | 'REQUEST_XML_TRR1';
 
 const handlerLoaders: Record<PlaceHolderKey, () => Promise<PlaceholderModule>> = {
@@ -34,6 +36,8 @@ const handlerLoaders: Record<PlaceHolderKey, () => Promise<PlaceholderModule>> =
   isoTimestamp: () => import('./placeholders/iso-timestamp'),
   RESPONSE_XML_LIR1: () => import('./placeholders/ojp-lir1'),
   RESPONSE_XML_TR1: () => import('./placeholders/ojp-tr1'),
+  REQUEST_XML_FR1: () => import('./placeholders/ojp-fr1'),
+  RESPONSE_XML_FR2: () => import('./placeholders/ojp-fr2'),
   REQUEST_XML_TRR1: () => import('./placeholders/ojp-trr1'),
 };
 
