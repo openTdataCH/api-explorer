@@ -14,7 +14,7 @@ export abstract class OJP_PlaceholderHandler {
     this.requestorRef = 'odmch-api-explorer';
   }
 
-  protected buildSDK(context: PlaceholderContext): OJP.AnySDK {
+  protected buildSDK(context: PlaceholderContext, useOJPv1: boolean = false): OJP.AnySDK {
     let apiURL: string | null = null;
     let ojpVersion: OJP.OJP_VERSION = '2.0';
     try {
@@ -27,6 +27,10 @@ export abstract class OJP_PlaceholderHandler {
       const operationId: string = context.apiSpec.paths[requestPathKeys[0]].post.operationId;
 
       if (operationId.toLowerCase().startsWith('ojp1.0')) {
+        ojpVersion = '1.0';
+      }
+
+      if (useOJPv1) {
         ojpVersion = '1.0';
       }
     } catch {
