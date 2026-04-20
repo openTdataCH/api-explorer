@@ -1,6 +1,6 @@
 import * as OJP from 'ojp-sdk';
 
-import { PlaceholderContext, PlaceholderHandler } from './placeholder';
+import { PlaceholderContext } from './placeholder';
 import { API_Tokens } from '../../config/api-tokens';
 import { AppHelpers } from '../../helpers/app.helpers';
 
