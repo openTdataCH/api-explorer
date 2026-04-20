@@ -48,7 +48,7 @@ export abstract class OJP_PlaceholderHandler {
   }
 
   protected async fetchResponse(sdk: OJP.AnySDK, request: OJP_AnyRequest) {
-   try {
+    try {
       await request.fetchResponse(sdk);
     } catch (e) {
       return '<Error>Invalid XML response</Error>';
