@@ -41,7 +41,7 @@ paths:
                   wrapped: true                          
             examples:
               exampleNOVA1:
-                summary: "Get the trip"
+                summary: "Get TR Trip"
                 description: "OJPFare service used for trip request"
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
