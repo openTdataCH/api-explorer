@@ -89,6 +89,11 @@ export class Detail implements OnInit, AfterViewInit {
       return;
     }
 
+    // ngAfterViewInit runs after Angular’s view check
+    // => needs an explicit detectChanges() to update state of isFetchingData
+    this.model.isFetchingData = true;
+    this.cdr.detectChanges();
+
     try {
       const rawYaml = await this.loadYamlText(apiConfig.yamlPath);
       const spec = await this.parseYaml(apiConfig, rawYaml);
@@ -111,6 +116,9 @@ export class Detail implements OnInit, AfterViewInit {
     } catch (error) {
       console.error(error);
       this.model.errorMessage = 'Failed to load API document.';
+    } finally {
+      this.model.isFetchingData = false;
+      this.cdr.detectChanges();
     }
   }
 
