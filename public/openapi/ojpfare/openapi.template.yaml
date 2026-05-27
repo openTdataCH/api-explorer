@@ -41,8 +41,8 @@ paths:
                   wrapped: true                          
             examples:
               exampleNOVA1:
-                summary: "Get TR Trip"
-                description: "OJPFare service used for trip request"
+                summary: "1. Get trips between two stops"
+                description: "OJPFare service can be used to perform OJP TripRequest calls"
                 value: |
                   <?xml version="1.0" encoding="UTF-8"?>
                   <OJP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.siri.org.uk/siri" version="1.0" xmlns:ojp="http://www.vdv.de/ojp" xsi:schemaLocation="http://www.siri.org.uk/siri ../ojp-xsd-v1.0/OJP.xsd">
@@ -80,8 +80,8 @@ paths:
                     </OJPRequest>
                    </OJP>
               exampleNOVA2New:
-                summary: "Fares for TR trips (via OJP SDK)"
-                description: "This example is using OJP TR response for trips from Bern to Zürich"
+                summary: "2. Get fares for trips (via OJP SDK)"
+                description: "This example is using OJP TripRequest response for trips from Bern to Zürich dated next day at 10:00"
                 value: |
                   {{REQUEST_XML_FR1}}
               
