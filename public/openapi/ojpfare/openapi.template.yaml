@@ -1,0 +1,182 @@
+openapi: "3.0.1"
+info:
+  title: "Swiss OJP FARE explorer based on OpenAPI"
+  version: "1.0"
+  description: |
+    This swagger allows the test of the Swiss OJPFare service based on OJP 2.0. The interface follows the CEN standard interface OJP (Open API for distributed Journey Planning).
+    
+    The process is:
+    (1) get a trip by OJP trip service
+    (2) put the trip into an OJP fare request
+    (3) ask for fares    
+
+externalDocs:
+  description: "OJP documentation"
+  url: "https://opentransportdata.swiss/de/cookbook/preisauskunft-mit-ojp-fares/https://opentransportdata.swiss/de/cookbook/preisauskunft-mit-ojp-fares/"
+
+servers:
+  - url: "https://api.opentransportdata.swiss"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
+paths:
+  /ojpfare:
+    post:
+      summary: "OJP Fare acccess"
+      operationId: "OJPFare"
+      description: "OJPFare is the API to access Preisauskunft from NOVA. This is currently a version working on integration."
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema: 
+                type: object
+                xml:
+                  name: "OJP"
+                  wrapped: true                          
+            examples:
+              exampleNOVA1:
+                summary: "1. Get trips between two stops"
+                description: "OJPFare service can be used to perform OJP TripRequest calls"
+                value: |
+                  <?xml version="1.0" encoding="UTF-8"?>
+                  <OJP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.siri.org.uk/siri" version="1.0" xmlns:ojp="http://www.vdv.de/ojp" xsi:schemaLocation="http://www.siri.org.uk/siri ../ojp-xsd-v1.0/OJP.xsd">
+                    <OJPRequest>
+                      <ServiceRequest>
+                        <RequestorRef>OJP SDK v1.0</RequestorRef>
+                        <RequestTimestamp>{{isoTimestamp}}</RequestTimestamp>
+                        <ojp:OJPTripRequest>
+                          <RequestTimestamp>{{isoTimestamp}}</RequestTimestamp>
+                          <ojp:Origin>
+                            <ojp:PlaceRef>
+                              <StopPointRef>8576990</StopPointRef>
+                              <ojp:LocationName>
+                                <ojp:Text>Bern, Guisanplatz Expo (Bern)</ojp:Text>
+                              </ojp:LocationName>
+                            </ojp:PlaceRef>
+                          </ojp:Origin>
+                          <ojp:Destination>
+                            <ojp:PlaceRef>
+                              <StopPointRef>8571359</StopPointRef>
+                              <ojp:LocationName>
+                                <ojp:Text>Bern, Länggasse (Bern)</ojp:Text>
+                              </ojp:LocationName>
+                            </ojp:PlaceRef>
+                          </ojp:Destination>
+                          <ojp:Params>
+                            <ojp:NumberOfResultsAfter>1</ojp:NumberOfResultsAfter>
+                            <ojp:IncludeTrackSections>false</ojp:IncludeTrackSections>
+                            <ojp:IncludeLegProjection>false</ojp:IncludeLegProjection>
+                            <ojp:IncludeTurnDescription>false</ojp:IncludeTurnDescription>
+                            <ojp:IncludeIntermediateStops>true</ojp:IncludeIntermediateStops>
+                          </ojp:Params>
+                        </ojp:OJPTripRequest>
+                      </ServiceRequest>
+                    </OJPRequest>
+                   </OJP>
+              exampleNOVA2New:
+                summary: "2. Get fares for trips (via OJP SDK)"
+                description: "This example is using OJP TripRequest response for trips from Bern to Zürich dated next day at 10:00"
+                value: |
+                  {{REQUEST_XML_FR1}}
+              
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/xml:
+              schema:
+                type: object
+                xml:
+                  name: OJP
+                  wrapped: true
+              examples:
+                tr_be_zh:
+                  summary: FareRequest response for TripRequest Bern-Zürich
+                  value: |
+                    {{RESPONSE_XML_FR2}}
+        "400":
+          description: "Bad Request"
+          content:
+            application/xml:
+              schema: 
+                  type: object
+                  xml:
+                    name: "OJP"
+                    wrapped: true
+              examples:
+                example1:
+                  summary: "Not a valid XML"
+                  description: "The request is not valid. Check with xmllint or XMLSpy or so."
+                  value: |
+                    <problem xmlns="urn:ietf:rfc:7807">
+                      <status>400</status>
+                      <title>One or more validation errors occurred.</title>
+                      <type>https://tools.ietf.org/html/rfc7231#section-6.5.1</type>
+                      <traceId>00-32a4cf02692338530c7fd9899f0d6e4f-55e5e50844017d32-00</traceId>
+                      <MVC-Errors>
+                        <MVC-Empty>An error occurred while deserializing input data.</MVC-Empty>
+                      </MVC-Errors>
+                    </problem> 
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  required:
+                    - error
+              examples:
+                example2:
+                  summary: "Wrong or no key provided"
+                  description: "Get a correct key and apply it correctly."
+                  value:
+                    error: "Authorization field missing"
+        "403":
+          description: "Forbidden"
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  required:
+                    - error
+              examples:
+                example2:
+                  summary: "Wrong or no key provided"
+                  description: "Get a correct key and apply it correctly."
+                  value:
+                    error: "Access to this API has been disallowed"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema: 
+                  type: object
+                  properties:
+                    traceId: 
+                      type: string
+                    error:
+                      type: string
+                    host:
+                      type: string
+                  required:
+                    - error
+              examples:
+                example3:
+                  summary: "Something caused an internal problem"
+                  description: "Some parameter could really not be processed."
+                  value:
+                    traceId: "dfdd"
+                    error: "Object reference not set to an instance of an object."
+                    host: "xyk1-123host.host"

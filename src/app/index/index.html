@@ -1,0 +1,17 @@
+<div class="container py-4">
+  <header></header>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="mx-2 d-flex flex-column gap-2">
+        @for (apiData of this.model.apis; track apiData.id) {
+          <div>
+            <a [routerLink]="['/', apiData.id]">{{ apiData.title }}</a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <footer></footer>
+</div>
