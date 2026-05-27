@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import YAML from 'js-yaml';
@@ -11,11 +11,13 @@ import { Footer } from '../shared/footer/footer';
 import { API_Config } from '../config/api-config';
 import { AppHelpers } from '../helpers/app.helpers';
 import { API_Tokens } from '../config/api-tokens';
+
 import { PlaceholderContext, PlaceholderHandler } from './placeholders/placeholder';
 
 interface PageModel {
   errorMessage: string | null,
   apiConfig: API_Config | null,
+  isFetchingData: boolean,
 };
 
 type PlaceholderModule = {
@@ -27,6 +29,8 @@ export type PlaceHolderKey =
   | 'isoTimestamp'
   | 'RESPONSE_XML_LIR1'
   | 'RESPONSE_XML_TR1'
+  | 'REQUEST_XML_FR1'
+  | 'RESPONSE_XML_FR2'
   | 'REQUEST_XML_TRR1';
 
 const handlerLoaders: Record<PlaceHolderKey, () => Promise<PlaceholderModule>> = {
@@ -34,6 +38,8 @@ const handlerLoaders: Record<PlaceHolderKey, () => Promise<PlaceholderModule>> =
   isoTimestamp: () => import('./placeholders/iso-timestamp'),
   RESPONSE_XML_LIR1: () => import('./placeholders/ojp-lir1'),
   RESPONSE_XML_TR1: () => import('./placeholders/ojp-tr1'),
+  REQUEST_XML_FR1: () => import('./placeholders/ojp-fr1'),
+  RESPONSE_XML_FR2: () => import('./placeholders/ojp-fr2'),
   REQUEST_XML_TRR1: () => import('./placeholders/ojp-trr1'),
 };
 
@@ -51,10 +57,11 @@ export class Detail implements OnInit, AfterViewInit {
   @ViewChild('swaggerContainer', { static: true })
   protected swaggerContainer!: ElementRef<HTMLDivElement>;
 
-  public constructor() {
+  public constructor(private cdr: ChangeDetectorRef) {
     this.model = {
       errorMessage: null,
       apiConfig: null,
+      isFetchingData: false,
     };
   }
 
@@ -82,6 +89,11 @@ export class Detail implements OnInit, AfterViewInit {
       return;
     }
 
+    // ngAfterViewInit runs after Angular’s view check
+    // => needs an explicit detectChanges() to update state of isFetchingData
+    this.model.isFetchingData = true;
+    this.cdr.detectChanges();
+
     try {
       const rawYaml = await this.loadYamlText(apiConfig.yamlPath);
       const spec = await this.parseYaml(apiConfig, rawYaml);
@@ -104,6 +116,9 @@ export class Detail implements OnInit, AfterViewInit {
     } catch (error) {
       console.error(error);
       this.model.errorMessage = 'Failed to load API document.';
+    } finally {
+      this.model.isFetchingData = false;
+      this.cdr.detectChanges();
     }
   }
 
