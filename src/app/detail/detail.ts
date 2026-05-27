@@ -16,6 +16,7 @@ import { PlaceholderContext, PlaceholderHandler } from './placeholders/placehold
 interface PageModel {
   errorMessage: string | null,
   apiConfig: API_Config | null,
+  isFetchingData: boolean,
 };
 
 type PlaceholderModule = {
@@ -59,6 +60,7 @@ export class Detail implements OnInit, AfterViewInit {
     this.model = {
       errorMessage: null,
       apiConfig: null,
+      isFetchingData: false,
     };
   }
 
