@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import YAML from 'js-yaml';
@@ -57,7 +57,7 @@ export class Detail implements OnInit, AfterViewInit {
   @ViewChild('swaggerContainer', { static: true })
   protected swaggerContainer!: ElementRef<HTMLDivElement>;
 
-  public constructor() {
+  public constructor(private cdr: ChangeDetectorRef) {
     this.model = {
       errorMessage: null,
       apiConfig: null,
