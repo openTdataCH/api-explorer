@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 2.0.0
+  version: 2.0.1
   title: Train formation service
   description: This service provides information about train formations. Simply put, train formations
     represent a sequence of coaches that travel at a given date for a given rail company through a sequence
@@ -47,12 +47,15 @@ paths:
                     example: "UP"
         '503':
           description: "Service is not healthy"
+
   /v1/formations_stop_based:
     get:
-      description: This endpoint provides a stop-based perspective of the train formation, which originates
+      description: This endpoint is deprecated - use /v2/formations_stop_based instead.
+        Provides a stop-based perspective of the train formation, which originates
         from SKI's real-time system CUS. It includes the stops of the formation and a short string representation
         of how the vehicles depart from there.
         A documentation on how to interpret the string can be found here [Shortstring](https://opentransportdata.swiss/en/formationsdaten/).
+      deprecated: true
       summary: List formations in a compact format with sections
       operationId: getStopBasedFormations
       parameters:
@@ -162,10 +165,12 @@ paths:
                 error: internal Server error.
   /v1/formations_vehicle_based:
     get:
-      description: This endpoint provides a vehicle-based perspective of the train formation, which
+      description: This endpoint is deprecated - use /v2/formations_vehicle_based instead.
+        Provides a vehicle-based perspective of the train formation, which
         too originates from SKI's real-time system CUS and is extended by the content of FOS. It
         includes the vehicles of the formation and their respective stops and departure from there.
       summary: List formations in a compact format with sections
+      deprecated: true
       operationId: getVehicleBasedFormations
       parameters:
         - in: query
@@ -274,12 +279,14 @@ paths:
                 error: internal Server error.
   /v1/formations_full:
     get:
-      description: This endpoint provides a verbose representation about the train formation, which originates
+      description: This endpoint is deprecated - use /v2/formations_full instead.
+        Provides a verbose representation about the train formation, which originates
         from SKI's real-time system CUS and SBB's system FOS.
         It combines the vehicle and stop-based perspectives to provide a full view.
         A documentation on how to interpret the short string of the stop-based perspective can be
         found here [Shorstring](https://opentransportdata.swiss/en/formationsdaten/).
       summary: List formations for a train
+      deprecated: true
       operationId: getFormations
       parameters:
         - in: query
@@ -388,8 +395,9 @@ paths:
                 error: internal Server error.
   /v1/health:
     get:
-      description: Checks the health of the service.
+      description: This endpoint is deprecated - use /health instead. Checks the health of the service.
       summary: Health check endpoint
+      deprecated: true
       operationId: getHealth_v1
       responses:
         '200':
@@ -1207,7 +1215,7 @@ components:
           type: integer
           description: >
             This is a bitstring <b>given as integer</b> for which the following holds:
-            Bit #1 = small delay arrival 
+            Bit #1 = small delay arrival
             Bit #2 = small delay departure
             Bit #3 = large delay arrival
             Bit #4 = large delay departure
@@ -1229,7 +1237,7 @@ components:
             Bit #20 = N/A
             Bit #21 = short-term cancellation arrival
             Bit #22 = short-term cancellation departure
-            Bit #23 = short-term stopType change 
+            Bit #23 = short-term stopType change
             Bit #24 = unavailable low-floor trolley arrival (no formation change)
             Bit #25 = unavailable low-floor trolley departure (no formation change)
             Bit #26 = stopPoint added subsequently
