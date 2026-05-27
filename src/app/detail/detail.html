@@ -7,6 +7,14 @@
 
   <div class="card shadow-sm mb-3">
     <div class="card-body p-4">
+      
+      @if (this.model.isFetchingData) {
+        <div class="d-flex align-items-center gap-2 my-3">
+          <div class="spinner-border spinner-border-sm" role="status"></div>
+          <span>Loading...</span>
+        </div>
+      }
+      
       <div #swaggerContainer></div>
     </div>
   </div>

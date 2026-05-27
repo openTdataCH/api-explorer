@@ -5,7 +5,8 @@ import { API_Tokens } from '../../config/api-tokens';
 import { AppHelpers } from '../../helpers/app.helpers';
 
 type OJP_AnyRequest = OJP.LocationInformationRequest | OJP.OJPv1_LocationInformationRequest
-      | OJP.TripRequest | OJP.OJPv1_TripRequest;
+      | OJP.TripRequest | OJP.OJPv1_TripRequest
+      | OJP.OJPv1_FareRequest;
 
 export abstract class OJP_PlaceholderHandler {
   protected requestorRef: string;
