@@ -4,8 +4,8 @@ import { OJP_PlaceholderHandler } from './ojp';
 
 export default abstract class OJP_TR_Shared_PlaceholderHandle extends OJP_PlaceholderHandler {
   protected async fetchTripRequest(sdk: OJP.AnySDK): Promise<OJP.TripRequestResponse | OJP.OJPv1_TripRequestResponse> {
-    const fromStopRef = '8507000';
-    const toStopRef = '8503000';
+    const fromStopRef = 'ch:1:sloid:7000';
+    const toStopRef = 'ch:1:sloid:3000';
 
     const request = sdk.requests.TripRequest.initWithPlaceRefsOrCoords(fromStopRef, toStopRef);
     
