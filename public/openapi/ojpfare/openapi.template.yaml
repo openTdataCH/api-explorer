@@ -54,7 +54,7 @@ paths:
                           <RequestTimestamp>{{isoTimestamp}}</RequestTimestamp>
                           <ojp:Origin>
                             <ojp:PlaceRef>
-                              <StopPointRef>8576990</StopPointRef>
+                              <StopPointRef>ch:1:sloid:76990</StopPointRef>
                               <ojp:LocationName>
                                 <ojp:Text>Bern, Guisanplatz Expo (Bern)</ojp:Text>
                               </ojp:LocationName>
@@ -62,7 +62,7 @@ paths:
                           </ojp:Origin>
                           <ojp:Destination>
                             <ojp:PlaceRef>
-                              <StopPointRef>8571359</StopPointRef>
+                              <StopPointRef>ch:1:sloid:71359</StopPointRef>
                               <ojp:LocationName>
                                 <ojp:Text>Bern, Länggasse (Bern)</ojp:Text>
                               </ojp:LocationName>

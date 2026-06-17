@@ -160,7 +160,7 @@ paths:
                           <siri:MessageIdentifier>SER-1a2</siri:MessageIdentifier>
                           <Location>
                             <PlaceRef>
-                              <siri:StopPointRef>8503000</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:3000</siri:StopPointRef>
                               <Name>
                                 <Text>Bern</Text>
                               </Name>
@@ -189,7 +189,7 @@ paths:
                           <siri:MessageIdentifier>SER-1d4</siri:MessageIdentifier>
                           <Location>
                             <PlaceRef>
-                              <siri:StopPointRef>8592570</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:92570</siri:StopPointRef>
                               <Name>
                                 <Text>Schaffhausen, Quellenstrasse</Text>
                               </Name>
@@ -227,7 +227,7 @@ paths:
                           <siri:MessageIdentifier>TR-1a1NOW</siri:MessageIdentifier>
                           <Origin>
                             <PlaceRef>
-                              <siri:StopPointRef>8503308</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:3308</siri:StopPointRef>
                               <Name>
                                 <Text>Kloten</Text>
                               </Name>
@@ -235,7 +235,7 @@ paths:
                           </Origin>
                           <Destination>
                             <PlaceRef>
-                              <siri:StopPointRef>8503424</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:3424</siri:StopPointRef>
                               <Name>
                                 <Text>Schaffhausen</Text>
                               </Name>
@@ -265,7 +265,7 @@ paths:
                           <siri:MessageIdentifier>TR-1e2</siri:MessageIdentifier>
                           <Origin>
                             <PlaceRef>
-                              <siri:StopPointRef>8503000</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:3000</siri:StopPointRef>
                               <LocationName>
                                 <Text>Zürich HB</Text>
                               </LocationName>
@@ -274,7 +274,7 @@ paths:
                           </Origin>
                           <Destination>
                             <PlaceRef>
-                              <siri:StopPointRef>8503424</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:3424</siri:StopPointRef>
                               <LocationName>
                                 <Text>Schaffhausen</Text>
                               </LocationName>
@@ -282,7 +282,7 @@ paths:
                           </Destination>
                           <Via>
                             <ViaPoint>
-                              <siri:StopPointRef>8506000</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:6000</siri:StopPointRef>
                               <LocationName>
                                 <Text>Winterthur</Text>
                               </LocationName>
@@ -312,7 +312,7 @@ paths:
                           <siri:MessageIdentifier>TR-1r1</siri:MessageIdentifier>
                           <Origin>
                             <PlaceRef>
-                              <siri:StopPointRef>8507000</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:7000</siri:StopPointRef>
                               <Name>
                                 <Text>Bern</Text>
                               </Name>
@@ -320,7 +320,7 @@ paths:
                           </Origin>
                           <Destination>
                             <PlaceRef>
-                              <siri:StopPointRef>8504128</siri:StopPointRef>
+                              <siri:StopPointRef>ch:1:sloid:4128</siri:StopPointRef>
                               <Name>
                                 <Text>Murten/Morat</Text>
                               </Name>
