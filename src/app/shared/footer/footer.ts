@@ -15,7 +15,7 @@ export class Footer {
 
   public constructor() {
     this.model = {
-      updateDateF: '17.June 2026'
+      updateDateF: '6.July 2026'
     };
   }
 }
