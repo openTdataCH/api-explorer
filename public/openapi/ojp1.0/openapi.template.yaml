@@ -152,7 +152,7 @@ paths:
                               <ojp:OJPTripInfoRequest>
                                   <RequestTimestamp>{{isoTimestamp}}</RequestTimestamp>
                                   <MessageIdentifier>TIR-1a</MessageIdentifier>
-                                  <ojp:JourneyRef>ch:1:sjyid:100001:18362-001</ojp:JourneyRef>
+                                  <ojp:JourneyRef>ch:1:sjyid:100001:715-001</ojp:JourneyRef>
                                   <ojp:OperatingDayRef>{{today}}</ojp:OperatingDayRef>
                               </ojp:OJPTripInfoRequest>
                           </ServiceRequest>
