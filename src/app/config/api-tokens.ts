@@ -7,6 +7,6 @@ export const API_Tokens: Record<string, string> = {
   'ojp2.0': 'PLACEHOLDER_REPLACE_TOKEN__ojp2',
   // https://api-manager.opentransportdata.swiss/portal/catalogue-products/tedp_ojpfare-1
   'ojpfare': 'PLACEHOLDER_REPLACE_TOKEN__ojp_fare',
-  // https://api-manager.opentransportdata.swiss/portal/catalogue-products/tedp_road_traffic_traffic_situations_policy-1
+  // https://api-manager.opentransportdata.swiss/portal/catalogue-products/tedp_road_traffic_traffic_lights_policy-1
   'traffic_lights': 'PLACEHOLDER_REPLACE_TOKEN__traffic_lights',
 };
