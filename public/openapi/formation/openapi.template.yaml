@@ -20,7 +20,7 @@ info:
   contact:
     name: Open data platform mobility Switzerland
     url: https://opentransportdata.swiss
-    email: dlskipt@sbb.ch
+    email: opendata@sbb.ch 
 externalDocs:
   description: Formation API documentation
   url: https://opentransportdata.swiss/en/cookbook/formationsdaten/
